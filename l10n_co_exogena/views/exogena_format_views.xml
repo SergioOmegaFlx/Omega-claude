@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_exogena_format_tree" model="ir.ui.view">
+        <field name="name">exogena.format.list</field>
+        <field name="model">exogena.format</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="version"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_exogena_format_form" model="ir.ui.view">
+        <field name="name">exogena.format.form</field>
+        <field name="model">exogena.format</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="version"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_exogena_format" model="ir.actions.act_window">
+        <field name="name">Formatos de Exógena</field>
+        <field name="res_model">exogena.format</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

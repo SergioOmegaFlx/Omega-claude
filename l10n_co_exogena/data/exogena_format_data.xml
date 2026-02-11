@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="format_1001_v10" model="exogena.format">
+            <field name="code">1001</field>
+            <field name="name">Pagos o abonos en cuenta y retenciones practicadas</field>
+            <field name="version">10</field>
+        </record>
+    </data>
+</odoo>

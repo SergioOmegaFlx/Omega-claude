@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_exogena_generation_wizard_form" model="ir.ui.view">
+        <field name="name">exogena.generation.wizard.form</field>
+        <field name="model">exogena.generation.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="year"/>
+                        <field name="format_id"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="uvt_value"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_generate_report" string="Generar" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_launch_exogena_generation_wizard" model="ir.actions.act_window">
+        <field name="name">Generar Reporte de Exógena</field>
+        <field name="res_model">exogena.generation.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_exogena_format,access.exogena.format,model_exogena_format,l10n_co_exogena.group_exogena_manager,1,1,1,1
+access_exogena_concepto,access.exogena.concepto,model_exogena_concepto,l10n_co_exogena.group_exogena_manager,1,1,1,1
+access_exogena_concepto_mapping,access.exogena.concepto.mapping,model_exogena_concepto_mapping,l10n_co_exogena.group_exogena_manager,1,1,1,1
+access_exogena_uvt,access.exogena.uvt,model_exogena_uvt,l10n_co_exogena.group_exogena_manager,1,1,1,1
+access_exogena_report,access.exogena.report,model_exogena_report,l10n_co_exogena.group_exogena_manager,1,1,1,1
+access_exogena_generation_wizard,access.exogena.generation.wizard,model_exogena_generation_wizard,l10n_co_exogena.group_exogena_manager,1,1,1,1
+access_exogena_report_line_f1001,access.exogena.report.line.f1001,model_exogena_report_line_f1001,l10n_co_exogena.group_exogena_manager,1,1,1,1
