@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_piloto_so" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.piloto.so</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Campo en cabecera del pedido -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="x_studio_plan_piloto_costo"/>
+            </xpath>
+
+            <!-- Campo USD Cost en líneas de venta (LIST, no TREE) -->
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']"
+                   position="after">
+                <field name="x_studio_usd_cost"
+                       readonly="1"
+                       force_save="1"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
