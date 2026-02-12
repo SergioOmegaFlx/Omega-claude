@@ -1,0 +1,105 @@
+<odoo>
+    <!-- Acción de reporte HTML -->
+    <report
+        id="action_report_dian_1001"
+        model="dian.report.wizard"
+        string="DIAN - Formato 1001"
+        report_type="qweb-html"
+        name="l10n_co_dian_1001.dian_1001_report"
+        file="l10n_co_dian_1001.dian_1001_report"
+    />
+
+    <!-- Template principal -->
+    <template id="dian_1001_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <!-- Encabezado estilo libro mayor -->
+                    <h2>DIAN - Información Exógena Formato 1001</h2>
+                    <p>
+                        <strong>Compañía:</strong>
+                        <span t-esc="docs.company_id.display_name"/>
+                        <br/>
+                        <strong>Rango de fechas:</strong>
+                        <span t-esc="docs.date_from"/> -
+                        <span t-esc="docs.date_to"/>
+                    </p>
+
+                    <table class="table table-sm table-striped o_main_table">
+                        <thead>
+                            <tr>
+                                <th>CONCEPTO</th>
+                                <th>CUENTA CONTABLE</th>
+                                <th>TIPO DOCUMENTO</th>
+                                <th>IDENTIFICACION</th>
+                                <th>NOMBRE COMPLETO</th>
+                                <th>DIRECCIÓN</th>
+                                <th>CODIGO DPTO</th>
+                                <th>CODIGO MUNICIPIO</th>
+                                <th>PAIS</th>
+                                <th class="text-right">
+                                    PAGO O ABONO EN CUENTA DEDUCIBLE
+                                </th>
+                                <th class="text-right">
+                                    PAGO O ABONO EN CUENTA NO DEDUCIBLE
+                                </th>
+                                <th class="text-right">
+                                    RETENCION EN LA FUENTE PRACTICADA
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-if="not lines">
+                                <tr>
+                                    <td colspan="12" class="text-center">
+                                        No se encontraron datos para el rango seleccionado.
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-foreach="lines" t-as="l">
+                                <tr>
+                                    <td>
+                                        <t t-esc="l['concept_code']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="l['account_codes']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="l['partner_doc_type']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="l['partner_vat']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="l['partner_name']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="l['partner_street']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="l['partner_state_code']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="l['partner_city_code']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="l['partner_country_code']"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="l['base_amount']"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="l['non_deductible_amount']"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="l['tax_amount']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

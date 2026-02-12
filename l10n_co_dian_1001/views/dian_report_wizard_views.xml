@@ -1,0 +1,47 @@
+<!-- l10n_co_dian_1001/views/dian_report_wizard_views.xml -->
+<odoo>
+    <record id="view_dian_report_wizard_form" model="ir.ui.view">
+        <field name="name">dian.report.wizard.form</field>
+        <field name="model">dian.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="DIAN Exógena - Formato 1001">
+                <sheet>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="format_type"/>
+                    </group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_view_html"
+                            string="Ver en Pantalla (HTML)"
+                            type="object"
+                            class="btn-primary"/>
+                    <button name="action_export_xlsx"
+                            string="Descargar Excel"
+                            type="object"
+                            class="btn-secondary"/>
+                    <button string="Cancelar"
+                            class="btn-link"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dian_report_wizard" model="ir.actions.act_window">
+        <field name="name">Formato 1001 - DIAN</field>
+        <field name="res_model">dian.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_dian_report_1001"
+              name="Reporte Formato 1001"
+              parent="menu_dian_root"
+              action="action_dian_report_wizard"
+              sequence="20"/>
+</odoo>
