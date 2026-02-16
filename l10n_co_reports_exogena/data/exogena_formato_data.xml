@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Formato 1001 -->
+        <record id="formato_1001" model="exogena.formato">
+            <field name="code">1001</field>
+            <field name="name">Pagos o abonos en cuenta y retenciones practicadas</field>
+            <field name="version">10</field>
+            <field name="tipo_dato">flujo</field>
+            <field name="descripcion">Reporte de costos, gastos y retenciones practicadas a terceros durante el período fiscal.</field>
+        </record>
+
+        <!-- Formato 1003 -->
+        <record id="formato_1003" model="exogena.formato">
+            <field name="code">1003</field>
+            <field name="name">Retenciones en la fuente que le practicaron</field>
+            <field name="version">10</field>
+            <field name="tipo_dato">flujo</field>
+            <field name="descripcion">Retenciones que otros le practicaron a la empresa.</field>
+        </record>
+
+        <!-- Formato 1005 -->
+        <record id="formato_1005" model="exogena.formato">
+            <field name="code">1005</field>
+            <field name="name">Impuesto sobre las ventas descontable</field>
+            <field name="version">10</field>
+            <field name="tipo_dato">flujo</field>
+            <field name="descripcion">IVA descontable de compras.</field>
+        </record>
+
+        <!-- Formato 1006 -->
+        <record id="formato_1006" model="exogena.formato">
+            <field name="code">1006</field>
+            <field name="name">Impuesto sobre las ventas generado</field>
+            <field name="version">10</field>
+            <field name="tipo_dato">flujo</field>
+            <field name="descripcion">IVA generado en ventas.</field>
+        </record>
+
+        <!-- Formato 1007 -->
+        <record id="formato_1007" model="exogena.formato">
+            <field name="code">1007</field>
+            <field name="name">Ingresos recibidos para terceros</field>
+            <field name="version">10</field>
+            <field name="tipo_dato">flujo</field>
+            <field name="descripcion">Ingresos ordinarios y extraordinarios.</field>
+        </record>
+
+        <!-- Formato 1008 -->
+        <record id="formato_1008" model="exogena.formato">
+            <field name="code">1008</field>
+            <field name="name">Saldos de cuentas por cobrar</field>
+            <field name="version">10</field>
+            <field name="tipo_dato">saldo</field>
+            <field name="descripcion">Saldos de CxC al final del período.</field>
+        </record>
+
+        <!-- Formato 1009 -->
+        <record id="formato_1009" model="exogena.formato">
+            <field name="code">1009</field>
+            <field name="name">Saldos de cuentas por pagar</field>
+            <field name="version">10</field>
+            <field name="tipo_dato">saldo</field>
+            <field name="descripcion">Saldos de CxP al final del período.</field>
+        </record>
+    </data>
+</odoo>

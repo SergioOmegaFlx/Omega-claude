@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menú raíz -->
+    <menuitem 
+        id="menu_exogena_root"
+        name="Exógena DIAN"
+        parent="account.menu_finance_reports"
+        sequence="100"/>
+
+    <!-- Submenú: Reportes -->
+    <menuitem 
+        id="menu_exogena_reportes"
+        name="Reportes"
+        parent="menu_exogena_root"
+        sequence="10"/>
+
+    <!-- Reportes individuales -->
+    <menuitem 
+        id="menu_exogena_f1001"
+        name="Formato 1001 - Costos y Gastos"
+        parent="menu_exogena_reportes"
+        action="l10n_co_reports_exogena.action_account_report_exogena_f1001"
+        sequence="1"/>
+
+    <menuitem 
+        id="menu_exogena_f1003"
+        name="Formato 1003 - Retenciones Practicadas"
+        parent="menu_exogena_reportes"
+        action="l10n_co_reports_exogena.action_account_report_exogena_f1003"
+        sequence="3"/>
+
+    <menuitem 
+        id="menu_exogena_f1005"
+        name="Formato 1005 - IVA Descontable"
+        parent="menu_exogena_reportes"
+        action="l10n_co_reports_exogena.action_account_report_exogena_f1005"
+        sequence="5"/>
+
+    <menuitem 
+        id="menu_exogena_f1006"
+        name="Formato 1006 - IVA Generado"
+        parent="menu_exogena_reportes"
+        action="l10n_co_reports_exogena.action_account_report_exogena_f1006"
+        sequence="6"/>
+
+    <menuitem 
+        id="menu_exogena_f1007"
+        name="Formato 1007 - Ingresos"
+        parent="menu_exogena_reportes"
+        action="l10n_co_reports_exogena.action_account_report_exogena_f1007"
+        sequence="7"/>
+
+    <menuitem 
+        id="menu_exogena_f1008"
+        name="Formato 1008 - CxC"
+        parent="menu_exogena_reportes"
+        action="l10n_co_reports_exogena.action_account_report_exogena_f1008"
+        sequence="8"/>
+
+    <menuitem 
+        id="menu_exogena_f1009"
+        name="Formato 1009 - CxP"
+        parent="menu_exogena_reportes"
+        action="l10n_co_reports_exogena.action_account_report_exogena_f1009"
+        sequence="9"/>
+
+    <!-- Submenú: Configuración -->
+    <menuitem 
+        id="menu_exogena_config"
+        name="Configuración"
+        parent="menu_exogena_root"
+        sequence="100"/>
+
+    <menuitem 
+        id="menu_exogena_formatos"
+        name="Formatos"
+        parent="menu_exogena_config"
+        action="action_exogena_formato"
+        sequence="10"/>
+
+    <menuitem 
+        id="menu_exogena_conceptos"
+        name="Conceptos"
+        parent="menu_exogena_config"
+        action="action_exogena_concepto"
+        sequence="20"/>
+
+    <menuitem 
+        id="menu_exogena_mapeo"
+        name="Mapeo de Cuentas"
+        parent="menu_exogena_config"
+        action="action_exogena_concepto_cuenta"
+        sequence="30"/>
+</odoo>

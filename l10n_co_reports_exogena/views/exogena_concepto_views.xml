@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_exogena_concepto_tree" model="ir.ui.view">
+        <field name="name">exogena.concepto.list</field>
+        <field name="model">exogena.concepto</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="formato_id"/>
+                <field name="threshold_amount"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_exogena_concepto_form" model="ir.ui.view">
+        <field name="name">exogena.concepto.form</field>
+        <field name="model">exogena.concepto</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="formato_id"/>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="columna_base"/>
+                            <field name="columna_retencion" 
+                                   invisible="[('formato_id', '=', False)]"/>
+                            <field name="threshold_amount"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="descripcion"/>
+                    </group>
+                    <notebook>
+                        <page string="Mapeo de Cuentas" name="cuentas">
+                            <field name="cuenta_ids">
+                                <list editable="bottom">
+                                    <field name="account_id"/>
+                                    <field name="tipo_columna"/>
+                                    <field name="include_children"/>
+                                    <field name="signo"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_exogena_concepto" model="ir.actions.act_window">
+        <field name="name">Conceptos de Exógena</field>
+        <field name="res_model">exogena.concepto</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_group_by_formato': 1}</field>
+    </record>
+</odoo>

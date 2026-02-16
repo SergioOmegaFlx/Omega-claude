@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_exogena_concepto_cuenta_tree" model="ir.ui.view">
+        <field name="name">exogena.concepto.cuenta.list</field>
+        <field name="model">exogena.concepto.cuenta</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="concepto_id"/>
+                <field name="account_id"/>
+                <field name="tipo_columna"/>
+                <field name="include_children"/>
+                <field name="signo"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_exogena_concepto_cuenta" model="ir.actions.act_window">
+        <field name="name">Mapeo de Cuentas - Exógena</field>
+        <field name="res_model">exogena.concepto.cuenta</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

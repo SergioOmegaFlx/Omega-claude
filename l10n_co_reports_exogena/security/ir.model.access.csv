@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_exogena_formato_user,access.exogena.formato.user,model_exogena_formato,account.group_account_user,1,0,0,0
+access_exogena_formato_manager,access.exogena.formato.manager,model_exogena_formato,account.group_account_manager,1,1,1,1
+access_exogena_concepto_user,access.exogena.concepto.user,model_exogena_concepto,account.group_account_user,1,0,0,0
+access_exogena_concepto_manager,access.exogena.concepto.manager,model_exogena_concepto,account.group_account_manager,1,1,1,1
+access_exogena_concepto_cuenta_user,access.exogena.concepto.cuenta.user,model_exogena_concepto_cuenta,account.group_account_user,1,0,0,0
+access_exogena_concepto_cuenta_manager,access.exogena.concepto.cuenta.manager,model_exogena_concepto_cuenta,account.group_account_manager,1,1,1,1
+access_exogena_report_f1001_user,access.exogena.report.f1001.user,model_exogena_report_f1001,account.group_account_user,1,1,1,1
+access_exogena_report_f1003_user,access.exogena.report.f1003.user,model_exogena_report_f1003,account.group_account_user,1,1,1,1
+access_exogena_report_f1005_user,access.exogena.report.f1005.user,model_exogena_report_f1005,account.group_account_user,1,1,1,1
+access_exogena_report_f1006_user,access.exogena.report.f1006.user,model_exogena_report_f1006,account.group_account_user,1,1,1,1
+access_exogena_report_f1007_user,access.exogena.report.f1007.user,model_exogena_report_f1007,account.group_account_user,1,1,1,1
+access_exogena_report_f1008_user,access.exogena.report.f1008.user,model_exogena_report_f1008,account.group_account_user,1,1,1,1
+access_exogena_report_f1009_user,access.exogena.report.f1009.user,model_exogena_report_f1009,account.group_account_user,1,1,1,1

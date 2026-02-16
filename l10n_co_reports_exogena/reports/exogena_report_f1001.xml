@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_report_exogena_f1001" model="account.report">
+        <field name="name">Formato 1001 - Costos y Gastos</field>
+
+        <!-- ESTE ES EL CAMPO CORRECTO -->
+        <field name="handler_model">exogena.report.f1001</field>
+
+        <field name="country_id" ref="base.co"/>
+        <field name="availability_condition">country</field>
+        <field name="default_opening_date_filter">this_year</field>
+    </record>
+
+</odoo>

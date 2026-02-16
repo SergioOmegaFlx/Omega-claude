@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Agregar campo en vista form de account.account -->
+    <record id="view_account_form_exogena" model="ir.ui.view">
+        <field name="name">account.account.form.exogena</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Exógena DIAN" name="exogena">
+                    <group>
+                        <field name="exogena_mapeo_count"/>
+                    </group>
+                    <field name="exogena_mapeo_ids" readonly="1">
+                        <list>
+                            <field name="concepto_id"/>
+                            <field name="tipo_columna"/>
+                            <field name="include_children"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
