@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estructura_liquidacion_colombiana" model="hr.payroll.structure">
+        <field name="name">Liquidación de Contrato (Colombia)</field>
+        <field name="country_id" ref="base.co"/>
+        <field name="type_id" model="hr.payroll.structure.type" search="[('default_resource_calendar_id', '!=', False)]"/>
+    </record>
+
+    <record id="rule_liq_prima" model="hr.salary.rule">
+        <field name="name">Prima de Servicios (Liquidación)</field>
+        <field name="code">LIQ_PRIMA</field>
+        <field name="category_id" ref="sos_l10n_co_nomina.DEVENGOPREST"/>
+        <field name="sequence">150</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+base = rules.IBC_SS.total + (rules.AUX_TRANS.total if 'AUX_TRANS' in rules else 0)
+fecha_inicio = contract.fecha_ultimo_pago_prima or contract.date_start
+dias = (payslip.date_to - fecha_inicio).days + 1
+result = (base * dias) / 360
+        </field>
+        <field name="struct_id" ref="estructura_liquidacion_colombiana"/>
+    </record>
+
+    <record id="rule_liq_cesantias" model="hr.salary.rule">
+        <field name="name">Cesantías (Liquidación)</field>
+        <field name="code">LIQ_CESANTIAS</field>
+        <field name="category_id" ref="sos_l10n_co_nomina.DEVENGOPREST"/>
+        <field name="sequence">151</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+base = rules.IBC_SS.total + (rules.AUX_TRANS.total if 'AUX_TRANS' in rules else 0)
+fecha_inicio = contract.fecha_ultimo_pago_cesantias or contract.date_start
+dias = (payslip.date_to - fecha_inicio).days + 1
+result = (base * dias) / 360
+        </field>
+        <field name="struct_id" ref="estructura_liquidacion_colombiana"/>
+    </record>
+
+    <record id="rule_liq_int_cesantias" model="hr.salary.rule">
+        <field name="name">Intereses Cesantías (Liquidación)</field>
+        <field name="code">LIQ_INT_CESANTIAS</field>
+        <field name="category_id" ref="sos_l10n_co_nomina.DEVENGOPREST"/>
+        <field name="sequence">152</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+fecha_inicio = contract.fecha_ultimo_pago_cesantias or contract.date_start
+dias = (payslip.date_to - fecha_inicio).days + 1
+result = rules.LIQ_CESANTIAS.total * (dias * 0.12 / 360)
+        </field>
+        <field name="struct_id" ref="estructura_liquidacion_colombiana"/>
+    </record>
+
+    <record id="rule_liq_vacaciones" model="hr.salary.rule">
+        <field name="name">Vacaciones Compensadas (Liquidación)</field>
+        <field name="code">LIQ_VACACIONES</field>
+        <field name="category_id" ref="sos_l10n_co_nomina.DEVENGOPREST"/>
+        <field name="sequence">153</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+dias_pendientes = inputs.VAC_PEND.amount if 'VAC_PEND' in inputs else 0
+result = (contract.wage * dias_pendientes) / 30
+        </field>
+        <field name="struct_id" ref="estructura_liquidacion_colombiana"/>
+    </record>
+</odoo>

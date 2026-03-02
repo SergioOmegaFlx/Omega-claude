@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="prestamo_input_type" model="hr.payslip.input.type">
+            <field name="name">Préstamo</field>
+            <field name="available_in_attachments">True</field>
+            <field name="code">PREST</field>
+        </record>
+        <record id="comisiones_input_type" model="hr.payslip.input.type">
+            <field name="name">Comisiones por Venta</field>
+            <field name="available_in_attachments">True</field>
+            <field name="code">COM</field>
+        </record>
+        <record id="oded_input_type" model="hr.payslip.input.type">
+            <field name="name">Otra Deducción</field>
+            <field name="available_in_attachments">True</field>
+            <field name="code">ODED</field>
+        </record>
+        <record id="fondo_input_type" model="hr.payslip.input.type">
+            <field name="name">Fondo de Solidaridad Pensional</field>
+            <field name="available_in_attachments">True</field>
+            <field name="code">FSP</field>
+        </record>
+        <record id="retencion_input_type" model="hr.payslip.input.type">
+            <field name="name">Retencion en salario</field>
+            <field name="available_in_attachments">True</field>
+            <field name="code">RS</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--<record id="hed_leave_type" model="hr.leave.type">
+            <field name="name">Horas Extras Diurna</field>
+            <field name="work_entry_type_id" ref="overtime_work_entry_type"/>
+        </record>
+        <record id="heddf_leave_type" model="hr.leave.type">
+            <field name="name">Horas Extras Diurna Dominical o Festiva</field>
+            <field name="work_entry_type_id" ref="heddf_work_entry_type"/>
+        </record>
+        <record id="hen_leave_type" model="hr.leave.type">
+            <field name="name">Horas Extras Nocturna</field>
+            <field name="work_entry_type_id" ref="hen_work_entry_type"/>
+        </record>
+        <record id="hendf_leave_type" model="hr.leave.type">
+            <field name="name">Horas Extras Nocturna Dominical o Festiva</field>
+             <field name="work_entry_type_id" ref="hendf_work_entry_type"/>
+        </record>
+        <record id="rn_leave_type" model="hr.leave.type">
+            <field name="name">Recargo Nocturno</field>
+            <field name="work_entry_type_id" ref="rn_work_entry_type"/>
+        </record>
+        <record id="rdf_leave_type" model="hr.leave.type">
+            <field name="name">Recargo Dominical o Festivo</field>
+            <field name="work_entry_type_id" ref="rdf_work_entry_type"/>
+        </record>
+        <record id="rndf_leave_type" model="hr.leave.type">
+            <field name="name">Recargo Nocturno Dominical o Festivo</field>
+            <field name="work_entry_type_id" ref="rndf_work_entry_type"/>
+        </record>-->
+        <record id="incat_leave_type" model="hr.leave.type">
+            <field name="name">Incapacidad Accidente de Trabajo</field>
+            <field name="requires_allocation">no</field>
+            <field name="work_entry_type_id" ref="incat_work_entry_type"/>
+        </record>
+        <record id="incie_leave_type" model="hr.leave.type">
+            <field name="name">Incapacidad Enfermedad General</field>
+            <field name="requires_allocation">no</field>
+            <field name="work_entry_type_id" ref="incie_work_entry_type"/>
+        </record>
+        <record id="lmp_leave_type" model="hr.leave.type">
+            <field name="name">Licencia por Maternidad/Paternidad</field>
+            <field name="requires_allocation">no</field>
+            <field name="work_entry_type_id" ref="lmp_work_entry_type"/>
+        </record>
+        <record id="lr_leave_type" model="hr.leave.type">
+            <field name="name">Licencia Remunerada</field>
+            <field name="requires_allocation">no</field>
+            <field name="work_entry_type_id" ref="lr_work_entry_type"/>
+        </record>
+        <record id="lnr_leave_type" model="hr.leave.type">
+            <field name="name">Licencia No Remunerada</field>
+            <field name="requires_allocation">no</field>
+            <field name="work_entry_type_id" ref="lnr_work_entry_type"/>
+        </record>
+        <record id="vd_leave_type" model="hr.leave.type">
+            <field name="name">Vacaciones disfrutadas</field>
+            <field name="work_entry_type_id" ref="vd_work_entry_type"/>
+        </record>
+        <record id="vc_leave_type" model="hr.leave.type">
+            <field name="name">Vacaciones compensadas</field>
+            <field name="work_entry_type_id" ref="vc_work_entry_type"/>
+        </record>
+    </data>
+</odoo>

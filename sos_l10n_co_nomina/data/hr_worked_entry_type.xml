@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--categoria reglas-->
+        <record id="overtime_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Horas Extras Diurna</field>
+            <field name="color">4</field>
+            <field name="code">HED</field>
+        </record>
+        <record id="heddf_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Horas Extras Diurna Dominical o Festiva</field>
+            <field name="color">4</field>
+            <field name="code">HEDDF</field>
+        </record>
+        <record id="hen_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Horas Extras Nocturna</field>
+            <field name="color">4</field>
+            <field name="code">HEN</field>
+        </record>
+        <record id="hendf_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Horas Extras Nocturna Dominical o Festiva</field>
+            <field name="color">4</field>
+            <field name="code">HENDF</field>
+        </record>
+        <record id="rn_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Recargo Nocturno</field>
+            <field name="color">4</field>
+            <field name="code">RN</field>
+        </record>
+        <record id="rdf_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Recargo Dominical o Festivo</field>
+            <field name="color">4</field>
+            <field name="code">RDF</field>
+        </record>
+        <record id="rndf_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Recargo Nocturno Dominical o Festivo</field>
+            <field name="color">4</field>
+            <field name="code">RNDF</field>
+        </record>
+        <record id="incat_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Incapacidad Accidente de Trabajo</field>
+            <field name="color">4</field>
+            <field name="code">INCAT</field>
+        </record>
+        <record id="incie_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Incapacidad Enfermedad General</field>
+            <field name="color">4</field>
+            <field name="code">INCIE</field>
+        </record>
+        <record id="lmp_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Licencia por Maternidad/Paternidad</field>
+            <field name="color">4</field>
+            <field name="code">LMP</field>
+        </record>
+        <record id="lr_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Licencia Remunerada</field>
+            <field name="color">4</field>
+            <field name="code">LR</field>
+        </record>
+        <record id="lnr_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Licencia No Remunerada</field>
+            <field name="color">4</field>
+            <field name="code">LNR</field>
+        </record>
+        <record id="vd_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Vacaciones disfrutadas</field>
+            <field name="color">4</field>
+            <field name="code">VD1</field>
+        </record>
+        <record id="vc_work_entry_type" model="hr.work.entry.type">
+            <field name="name">Vacaciones compensadas</field>
+            <field name="color">4</field>
+            <field name="code">VC</field>
+        </record>
+    </data>
+</odoo>

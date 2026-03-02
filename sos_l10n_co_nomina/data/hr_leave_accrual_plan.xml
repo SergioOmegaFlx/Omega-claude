@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Plan acumulación-->
+        <record id="vacaciones_accrual_plan" model="hr.leave.accrual.plan">
+            <field name="name">Plan acumulación vacaciones</field>
+            <field name="accrued_gain_time">start</field>
+            <field name="carryover_date">allocation</field>
+        </record>
+    </data>
+</odoo>

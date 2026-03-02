@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pila_asiento_wizard_form" model="ir.ui.view">
+        <field name="name">pila.asiento.wizard.form</field>
+        <field name="model">pila.asiento.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generar Asiento Contable PILA">
+                <group>
+                    <group>
+                        <field name="month"/>
+                        <field name="year"/>
+                    </group>
+                    <group>
+                        <field name="date_move"/>
+                        <field name="journal_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="generar_asiento_pila" string="Generar Asiento" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pila_asiento_wizard" model="ir.actions.act_window">
+        <field name="name">Generar Asiento PILA</field>
+        <field name="res_model">pila.asiento.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_pila_wizard" 
+              name="Asiento Contable PILA" 
+              parent="hr_payroll.menu_hr_payroll_employee_payslips" 
+              action="action_pila_asiento_wizard" 
+              sequence="100"/>
+</odoo>

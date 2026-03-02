@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_holiday_status_form_inherit_pila" model="ir.ui.view">
+        <field name="name">hr.leave.type.form.pila</field>
+        <field name="model">hr.leave.type</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="codigo_pila"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_pila_inherit" model="ir.ui.view">
+        <field name="name">res.partner.pila.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="codigo_pila" placeholder="Código SuperSalud"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="hr_contract_view_form_inherit_colombia" model="ir.ui.view">
+        <field name="name">hr.contract.view.form.inherit.colombia</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Nómina Colombia" name="nomina_colombia">
+                    <group>
+                        <group string="Fechas de Corte de Prestaciones" name="fechas_prestaciones">
+                            <field name="fecha_ultimo_pago_prima" widget="date"/>
+                            <field name="fecha_ultimo_pago_cesantias" widget="date"/>
+                            <field name="fecha_ultimo_pago_vacaciones" widget="date"/>
+                        </group>
+                        <group string="Información Adicional" name="info_adicional_pila">
+                            <p class="text-muted" colspan="2">
+                                Estas fechas se utilizan para el cálculo automático de la 
+                                liquidación de contrato y provisiones mensuales.
+                            </p>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

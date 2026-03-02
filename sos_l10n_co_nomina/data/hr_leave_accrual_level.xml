@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!--Regla acumulación-->
+        <record id="vacaciones_accrual_level" model="hr.leave.accrual.level">
+            <field name="accrual_plan_id" ref="sos_l10n_co_nomina.vacaciones_accrual_plan"/>
+            <field name="added_value">1.25</field>
+            <field name="frequency">monthly</field>
+            <field name="first_day_display">1</field>
+            <field name="cap_accrued_time">False</field>
+            <field name="start_count">1</field>
+            <field name="start_type">day</field>
+            <field name="action_with_unused_accruals">all</field>
+        </record>
+    </data>
+</odoo>

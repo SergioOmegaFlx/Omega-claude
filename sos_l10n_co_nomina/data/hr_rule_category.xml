@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--categoria reglas-->
+        <record id="CONFIGURACION" model="hr.salary.rule.category">
+            <field name="name">Configuracion</field>
+            <field name="code">CONFIG</field>
+        </record>
+
+        <record id="BASICO" model="hr.salary.rule.category">
+            <field name="name">Basico</field>
+            <field name="code">BASICO</field>
+        </record>
+        
+        <record id="SEGURIDADSOCIAL" model="hr.salary.rule.category">
+            <field name="name">Seguridad Social</field>
+            <field name="code">SS</field>
+        </record>
+
+        <record id="AUXILIO" model="hr.salary.rule.category">
+            <field name="name">Auxilio</field>
+            <field name="code">AUX</field>
+        </record>
+
+        <record id="DEVENGOPREST" model="hr.salary.rule.category">
+            <field name="name">Devengos prestacionales</field>
+            <field name="code">DP</field>
+        </record>
+        
+         <record id="DEVENGONPREST" model="hr.salary.rule.category">
+            <field name="name">Devengos no prestacionales</field>
+            <field name="code">DNP</field>  
+        </record>
+
+        <record id="DEDUCCION" model="hr.salary.rule.category">
+            <field name="name">Deducción</field>
+            <field name="code">DED</field>
+        </record>
+
+        <record id="PARAFISCALES" model="hr.salary.rule.category">
+            <field name="name">Parafiscales</field>
+            <field name="code">PARA</field>
+        </record>
+
+        <record id="HORASEXTRAS" model="hr.salary.rule.category">
+            <field name="name">Horas Extras</field>
+            <field name="code">HE</field>
+        </record>
+
+        <record id="INCAPACIDADES" model="hr.salary.rule.category">
+            <field name="name">Incapacidades</field>
+            <field name="code">INC</field>
+        </record>
+
+        <record id="PERMISOS" model="hr.salary.rule.category">
+            <field name="name">Permisos</field>
+            <field name="code">PER</field>
+        </record>
+
+        <record id="RECARGOS" model="hr.salary.rule.category">
+            <field name="name">Recargos</field>
+            <field name="code">REC</field>
+        </record>
+
+        <record id="PRESTACIONES" model="hr.salary.rule.category">
+            <field name="name">Prestaciones Sociales</field>
+            <field name="code">PES</field>
+        </record>
+
+        <record id="PROVISIONES" model="hr.salary.rule.category">
+            <field name="name">Provisiones</field>
+            <field name="code">PROV</field>
+        </record>
+        
+        <record id="NETO" model="hr.salary.rule.category">
+            <field name="name">Neto</field>
+            <field name="code">NETO</field>
+        </record>
+
+        <record id="RETENCIONES" model="hr.salary.rule.category">
+            <field name="name">Retenciones</field>
+            <field name="code">RET</field>
+        </record>
+    </data>
+</odoo>

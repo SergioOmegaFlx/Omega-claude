@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--reglas valor fijo/configuracion-->
+        <record id="smmlv_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.CONFIGURACION"/>
+            <field name="name">Valor Auxilio Transporte Mensual 2024</field>
+            <field name="sequence">1</field>
+            <field name="appears_on_payslip">False</field>
+            <field name="code">VAUXT</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">fix</field>
+            <field name="amount_fix">162000</field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+        <record id="auxtte_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.CONFIGURACION"/>
+            <field name="name">Salario minimo mensual legal vigente 2024</field>
+            <field name="sequence">1</field>
+            <field name="appears_on_payslip">False</field>
+            <field name="code">SMMLV</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">fix</field>
+            <field name="amount_fix">1300000</field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas python-->
+        <!--reglas BASICO-->
+        <record id="salario_basico_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.BASICO"/>
+            <field name="name">Salario básico total</field>
+            <field name="sequence">5</field>
+            <field name="code">BAS</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'WORK100' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_dia = contract.wage / 30
+dias = worked_days['WORK100'].number_of_days
+result = dias * valor_dia
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="auxilio_transporte_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.AUXILIO"/>
+            <field name="name">Auxilio de Transporte</field>
+            <field name="sequence">15</field>
+            <field name="code">AUXT</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+if contract.wage &lt; (2 * SMMLV) and ('WORK100' in worked_days):
+    result = 1
+else:
+    result = 0
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+dias = 0
+if worked_days['WORK100']:
+    dias = worked_days['WORK100'].number_of_days
+
+if contract.wage &lt; (2 * SMMLV):
+    result = (VAUXT * dias) / 30
+else:
+    result = 0
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas SEGURIDAD SOCIAL-->
+
+        <record id="aporte_pension_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.SEGURIDADSOCIAL"/>
+            <field name="name">Aporte a pensión</field>
+            <field name="sequence">10</field>
+            <field name="code">AP</field>
+            <field name="tipo_entidad_asociada">afp</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = (categories['BASICO'] + categories['HE'] +  categories['REC'] +  categories['AUX'] +  categories['DP'])*(-0.04)
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="aporte_salud_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.SEGURIDADSOCIAL"/>
+            <field name="name">Aporte a salud</field>
+            <field name="sequence">10</field>
+            <field name="code">AS</field>
+            <field name="tipo_entidad_asociada">eps</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = (categories['BASICO'] + categories['HE'] +  categories['REC'] +  categories['AUX'] +  categories['DP'])*(-0.04)
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas DEVENGOS-->
+
+        <record id="comision_venta_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.DEVENGOPREST"/>
+            <field name="name">Comisiones por Venta</field>
+            <field name="sequence">5</field>
+            <field name="code">	COMI</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'COM' in inputs
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = inputs['COM'].amount
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas DEDUCCIONES-->
+
+        <record id="prestamo_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.DEDUCCION"/>
+            <field name="name">Prestamo</field>
+            <field name="sequence">40</field>
+            <field name="code">PREST</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'PREST' in inputs
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = -inputs['PREST'].amount
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="otra_ded_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.DEDUCCION"/>
+            <field name="name">Otra Deducción</field>
+            <field name="sequence">40</field>
+            <field name="code">ODED</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'ODED' in inputs
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = -inputs['ODED'].amount
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas PARAFISCALES-->
+
+        <record id="fondo_solidaridad_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PARAFISCALES"/>
+            <field name="name">Fondo de Solidaridad Pensional</field>
+            <field name="sequence">10</field>
+            <field name="code">FSP</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'FSP' in inputs
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = -inputs['FSP'].amount
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+ 
+         <!--reglas RETENCIONES-->
+
+        <record id="retencio_salario_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.RETENCIONES"/>
+            <field name="name">Retencion en salario</field>
+            <field name="sequence">10</field>
+            <field name="code">RS</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'RS' in inputs
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = -inputs['RS'].amount
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas HORAS EXTRAS-->
+
+        <record id="horas_extras_diurnas_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.HORASEXTRAS"/>
+            <field name="name">Horas Extras Diurna</field>
+            <field name="sequence">25</field>
+            <field name="code">HED</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'HED' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_hora = contract.wage /240
+
+result = worked_days['HED'].number_of_hours * valor_hora * 1.25
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="horas_extras_diurnas_domi_fest_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.HORASEXTRAS"/>
+            <field name="name">Horas Extras Diurna Dominical o Festiva</field>
+            <field name="sequence">25</field>
+            <field name="code">HEDDF</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'HEDDF' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_hora = contract.wage /240
+
+result = worked_days['HEDDF'].number_of_hours * valor_hora * 2
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="horas_extras_nocturna_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.HORASEXTRAS"/>
+            <field name="name">Horas Extras Nocturna</field>
+            <field name="sequence">25</field>
+            <field name="code">HEN</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'HEN' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_hora = contract.wage /240
+
+result = worked_days['HEN'].number_of_hours * valor_hora * 1.75
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="horas_extras_nocturna_domi_fest_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.HORASEXTRAS"/>
+            <field name="name">Horas Extras Nocturna Dominical o Festiva</field>
+            <field name="sequence">25</field>
+            <field name="code">HENDF</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'HENDF' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_hora = contract.wage /240
+
+result = worked_days['HENDF'].number_of_hours * valor_hora * 2.5
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas RECARGOS-->
+
+        <record id="recargo_nocturno_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.RECARGOS"/>
+            <field name="name">Recargo Nocturno</field>
+            <field name="sequence">20</field>
+            <field name="code">RN</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'RN' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_hora = contract.wage /240
+
+result = worked_days['RN'].number_of_hours * valor_hora * 0.35
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="recargo_dom_fest_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.RECARGOS"/>
+            <field name="name">Recargo Dominical o Festivo</field>
+            <field name="sequence">20</field>
+            <field name="code">RDF</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'RDF' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_hora = contract.wage /240
+result = worked_days['RDF'].number_of_hours * valor_hora * 0.75
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="recargo_nocturno_dom_fest_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.RECARGOS"/>
+            <field name="name">Recargo Nocturno Dominical o Festivo</field>
+            <field name="sequence">20</field>
+            <field name="code">RNDF</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'RNDF' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_hora = contract.wage /240
+
+result = worked_days['RNDF'].number_of_hours * valor_hora * 1.1
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas INCAPACIDADES-->
+
+        <record id="incapacidad_accidente_trabajo_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.INCAPACIDADES"/>
+            <field name="name">Incapacidad Accidente de Trabajo</field>
+            <field name="sequence">15</field>
+            <field name="code">INCAT</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'INCAT' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_dia = ( contract.wage + categories['AUX'] ) / 30
+
+if valor_dia &lt; (SMMLV / 30): 
+    valor_dia = SMMLV / 30  
+dias = worked_days['INCAT'].number_of_days
+result = dias * valor_dia
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="incapacidad_enfermedad_general_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.INCAPACIDADES"/>
+            <field name="name">Incapacidad Enfermedad General</field>
+            <field name="sequence">15</field>
+            <field name="code">INCIE</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'INCIE' in worked_days            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_dia = ( contract.wage + categories['AUX'] ) / 30 * 0.66
+
+if valor_dia &lt; (SMMLV / 30): 
+    valor_dia = SMMLV / 30  
+dias = worked_days['INCIE'].number_of_days
+result = dias * valor_dia
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="licencia_pat_mat_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.INCAPACIDADES"/>
+            <field name="name">Licencia por Maternidad/Paternidad</field>
+            <field name="sequence">20</field>
+            <field name="code">LMP</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'LMP' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+salario =  contract.wage + categories['AUX'] 
+valor = (salario / 30) * worked_days['LMP'].number_of_days 
+result = valor
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas PERMISOS-->
+
+        <record id="licencia_remunerada_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PERMISOS"/>
+            <field name="name">Licencia Remunerada</field>
+            <field name="sequence">20</field>
+            <field name="code">LR</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'LR' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+salario = contract.wage + categories['AUX'] 
+valor = (salario / 30) * worked_days['LR'].number_of_days
+result = valor
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="licencia_no_remunerada_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PERMISOS"/>
+            <field name="name">Licencia No Remunerada</field>
+            <field name="sequence">20</field>
+            <field name="code">LNR</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'LNR' in worked_days  
+            </field>
+            <field name="amount_select">fix</field>
+            <field name="amount_fix">0</field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas PRESTACIONES SOCIALES-->
+
+        <record id="vacaciones_disfrutadas_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PRESTACIONES"/>
+            <field name="name">Vacaciones disfrutadas</field>
+            <field name="sequence">30</field>
+            <field name="code">VD</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'VD' in worked_days  
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_dia = contract.wage / 30
+dias = worked_days['VD'].number_of_days
+result = dias * valor_dia
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="vacaciones_compensadas_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PRESTACIONES"/>
+            <field name="name">Vacaciones compensadas</field>
+            <field name="sequence">30</field>
+            <field name="code">VC</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = 'VC' in worked_days
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+valor_dia = contract.wage / 30
+dias = worked_days['VC'].number_of_days
+result = dias * valor_dia
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="liquidacion_prima_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PRESTACIONES"/>
+            <field name="name">Liquidacion Prima</field>
+            <field name="sequence">30</field>
+            <field name="code">PRI</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = payslip.payslip_run_id.liquidar_prima
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+account = "Cuenta Contable Provision"
+result = contract.balance_account(account) * -1
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="liquidacion_cesantias_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PRESTACIONES"/>
+            <field name="name">Liquidacion Cesantias</field>
+            <field name="sequence">30</field>
+            <field name="code">CES</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = payslip.payslip_run_id.liquidar_cesantia
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+account = "Cuenta Contable Provision"
+result = contract.balance_account(account) * -1
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="liquidacion_intereses_cesantias_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PRESTACIONES"/>
+            <field name="name">Liquidación Intereses Cesantias</field>
+            <field name="sequence">31</field>
+            <field name="code">ICES</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = payslip.payslip_run_id.liquidar_cesantia
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = (CES) * 0.12
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas PROVISIONES-->
+
+        <record id="provision_cesantias_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PROVISIONES"/>
+            <field name="name">Provisión Cesantias</field>
+            <field name="sequence">98</field>
+            <field name="code">PROCES</field>
+            <field name="appears_on_payslip">False</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = (categories['BASICO'] + categories['AUX'] + categories['HE'] + categories['REC']) * 0.0833
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="provision_intereses_cesantias_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PROVISIONES"/>
+            <field name="name">Provisión Intereses Cesantias</field>
+            <field name="sequence">99</field>
+            <field name="code">PROICES</field>
+            <field name="appears_on_payslip">False</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = (PROCES) * 0.12
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="provision_prima_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PROVISIONES"/>
+            <field name="name">Provisión Prima</field>
+            <field name="sequence">98</field>
+            <field name="code">PROPRI</field>
+            <field name="appears_on_payslip">False</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = (categories['BASICO'] + categories['AUX'] + categories['HE'] + categories['REC']) * 0.0833
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="provision_vacaciones_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.PROVISIONES"/>
+            <field name="name">Provisión Vacaciones</field>
+            <field name="sequence">98</field>
+            <field name="code">PROVAC</field>
+            <field name="appears_on_payslip">False</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = categories['BASICO'] * 0.0417
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <!--reglas TOTAL A PAGAR-->
+
+        <record id="total_pagar_rule" model="hr.salary.rule">
+            <field name="category_id" ref="sos_l10n_co_nomina.NETO"/>
+            <field name="name">Total a Pagar</field>
+            <field name="sequence">70</field>
+            <field name="code">NET</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = categories['BASICO'] + categories['AUX'] + categories['HE'] + categories['REC'] + categories['DNP'] + categories['INC'] + categories['DP'] + categories['SS']  + categories['DED'] + categories['RET'] + categories['PES'] 
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="rule_prov_prima" model="hr.salary.rule">
+        <field name="name">Provisión Prima de Servicios</field>
+        <field name="code">PROV_PRIMA</field>
+        <field name="category_id" ref="hr_payroll.COMP"/> <field name="sequence">100</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# Base: IBC + Auxilio de Transporte
+base = rules.IBC_SS.total + (rules.AUX_TRANS.total if 'AUX_TRANS' in rules else 0)
+result = base * 0.0833
+        </field>
+        <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/> </record>
+
+        <record id="rule_prov_cesantias" model="hr.salary.rule">
+            <field name="name">Provisión Cesantías</field>
+            <field name="code">PROV_CESANTIAS</field>
+            <field name="category_id" ref="hr_payroll.COMP"/>
+            <field name="sequence">101</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+    base = rules.IBC_SS.total + (rules.AUX_TRANS.total if 'AUX_TRANS' in rules else 0)
+    result = base * 0.0833
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="rule_prov_int_cesantias" model="hr.salary.rule">
+            <field name="name">Provisión Intereses Cesantías</field>
+            <field name="code">PROV_INT_CESANTIAS</field>
+            <field name="category_id" ref="hr_payroll.COMP"/>
+            <field name="sequence">102</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+    # Se calcula sobre el valor de la provisión de cesantías del mes
+    result = rules.PROV_CESANTIAS.total * 0.12 / 12 # 1% mensual
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="rule_prov_vacaciones" model="hr.salary.rule">
+            <field name="name">Provisión Vacaciones</field>
+            <field name="code">PROV_VACACIONES</field>
+            <field name="category_id" ref="hr_payroll.COMP"/>
+            <field name="sequence">103</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+    # Las vacaciones no incluyen Auxilio de Transporte en la base
+    base = rules.IBC_SS.total
+    result = base * 0.0417
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="rule_pension_patronal" model="hr.salary.rule">
+            <field name="name">Pensión Empresa (Patronal)</field>
+            <field name="code">PEN_PAT</field>
+            <field name="category_id" ref="sos_l10n_co_nomina.SEGURIDADSOCIAL"/>
+            <field name="sequence">90</field>
+            <field name="appears_on_payslip">False</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+# Base: IBC de Seguridad Social
+# Se multiplica por 12% (Aporte patronal estándar)
+result = rules.IBC_SS.total * 0.12 if 'IBC_SS' in rules else 0.0
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="rule_arl_patronal" model="hr.salary.rule">
+            <field name="name">ARL Empresa (Riesgo 1)</field>
+            <field name="code">ARL</field>
+            <field name="category_id" ref="sos_l10n_co_nomina.SEGURIDADSOCIAL"/>
+            <field name="sequence">91</field>
+            <field name="appears_on_payslip">False</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+# Ajustar el porcentaje (0.00522) según el nivel de riesgo del contrato
+result = rules.IBC_SS.total * 0.00522 if 'IBC_SS' in rules else 0.0
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="rule_ccf_patronal" model="hr.salary.rule">
+            <field name="name">Caja de Compensación</field>
+            <field name="code">CCF</field>
+            <field name="category_id" ref="sos_l10n_co_nomina.PARAFISCALES"/>
+            <field name="sequence">92</field>
+            <field name="appears_on_payslip">False</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = rules.IBC_SS.total * 0.04 if 'IBC_SS' in rules else 0.0
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="rule_sena_patronal" model="hr.salary.rule">
+            <field name="name">SENA</field>
+            <field name="code">SENA</field>
+            <field name="category_id" ref="sos_l10n_co_nomina.PARAFISCALES"/>
+            <field name="sequence">93</field>
+            <field name="appears_on_payslip">False</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+# Exonerado si gana &lt; 10 SMMLV
+result = contract.wage >= (10 * SMMLV)
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = rules.IBC_SS.total * 0.02 if 'IBC_SS' in rules else 0.0
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+        <record id="rule_ibc_ss" model="hr.salary.rule">
+            <field name="name">IBC Seguridad Social</field>
+            <field name="code">IBC_SS</field>
+            <field name="category_id" ref="sos_l10n_co_nomina.CONFIGURACION"/>
+            <field name="sequence">50</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+# Sumamos Basico + HE + Recargos + Comisiones
+result = categories.get('BASICO', 0) + categories.get('HORASEXTRAS', 0) + categories.get('RECARGOS', 0) + categories.get('DEVENGOPREST', 0)
+            </field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="rule_icbf_patronal" model="hr.salary.rule">
+            <field name="name">ICBF Empresa</field>
+            <field name="code">ICBF</field>
+            <field name="category_id" ref="sos_l10n_co_nomina.PARAFISCALES"/>
+            <field name="sequence">94</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.wage >= (10 * SMMLV)</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = rules.IBC_SS.total * 0.03</field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+
+        <record id="rule_salud_patronal" model="hr.salary.rule">
+            <field name="name">Salud Empresa (Patronal)</field>
+            <field name="code">AS_PAT</field>
+            <field name="category_id" ref="sos_l10n_co_nomina.SEGURIDADSOCIAL"/>
+            <field name="sequence">95</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.wage >= (10 * SMMLV)</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = rules.IBC_SS.total * 0.085</field>
+            <field name="struct_id" ref="sos_l10n_co_nomina.estructura_basica_colombiana"/>
+        </record>
+    </data>
+</odoo>

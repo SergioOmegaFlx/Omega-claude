@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--tipo estructura salarial-->
+        <record id="structure_type_empleado_co" model="hr.payroll.structure.type">
+            <field name="name">Empleado Colombiano</field>
+            <field name="wage_type">monthly</field>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+        <!--estructura salarial-->
+        <record id="estructura_basica_colombiana" model="hr.payroll.structure">
+            <field name="name">Estructura Basica Colombiana</field>
+            <field name="type_id" ref="sos_l10n_co_nomina.structure_type_empleado_co"/>
+            <field name="country_id" ref="base.co"/>
+            <field name="active">True</field>
+        </record>
+
+    </data>
+</odoo>

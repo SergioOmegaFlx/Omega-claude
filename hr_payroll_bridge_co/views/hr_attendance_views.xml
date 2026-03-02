@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hr_attendance_form_bridge_co" model="ir.ui.view">
+        <field name="name">hr.attendance.form.bridge.co</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- 1) (Opcional) si antes pusimos un botón en header, ya NO lo necesitamos -->
+            <!-- No añadimos nada en <header> -->
+
+            <!-- 2) Añadimos la button box si no existe y metemos el smart button -->
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button
+                        name="action_open_work_entries"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-briefcase"
+                        invisible="work_entry_count == 0 or not state in ['approved', 'paid']">
+                        <div class="o_stat_info">
+                            <span class="o_stat_text"></span>
+                            <span class="o_stat_value">
+                                <field name="work_entry_count" widget="statinfo"/>
+                            </span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
