@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="hr_overtime_co_extended.AttendanceAlert" owl="1">
+
+        <div t-if="state.attendance_state === 'checked_out'" class="o_hr_attendance_banner alert alert-warning d-flex align-items-center text-nowrap p-2 h-100" role="alert">
+            <i class="fa fa-fw fa-warning me-2"/>
+            <span>¡Atención, <t t-esc="state.employee_name"/>! No has iniciado tu jornada.</span>
+        </div>
+        
+        <div t-if="state.attendance_state === 'checked_in'" class="o_hr_attendance_banner alert alert-info d-flex align-items-center text-nowrap p-2 h-100" role="alert">
+            <i class="fa fa-fw fa-clock-o me-2"/>
+            <span>Sesión activa desde las <t t-esc="state.check_in_time"/>.</span>
+        </div>
+        
+        <div t-if="state.attendance_state === 'error'" class="alert alert-danger p-2 m-3" role="alert">
+            Error al verificar estado de asistencia.
+        </div>
+
+    </t>
+</templates>

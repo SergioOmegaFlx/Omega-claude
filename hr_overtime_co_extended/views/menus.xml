@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="menu_hr_overtime_root"
+        name="Overtime &amp; Surcharges"
+        parent="hr_attendance.menu_hr_attendance_root"
+        sequence="50"/>
+
+    <menuitem
+        id="menu_hr_overtime"
+        name="Overtime Records"
+        parent="menu_hr_overtime_root"
+        action="action_hr_overtime"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_hr_recargo"
+        name="Surcharge Records"
+        parent="menu_hr_overtime_root"
+        action="action_hr_recargo"
+        sequence="20"/>
+
+    <menuitem
+        id="menu_hr_overtime_config"
+        name="Configuration"
+        parent="menu_hr_overtime_root"
+        sequence="100"/>
+    
+    <menuitem
+        id="menu_hr_overtime_type"
+        name="Overtime Types"
+        parent="menu_hr_overtime_config"
+        action="action_hr_overtime_type"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_hr_recargo_type"
+        name="Surcharge Types"
+        parent="menu_hr_overtime_config"
+        action="action_hr_recargo_type"
+        sequence="20"/>
+</odoo>

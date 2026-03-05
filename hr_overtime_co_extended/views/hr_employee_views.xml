@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_employee_view_form_overtime_approvers" model="ir.ui.view">
+        <field name="name">hr.employee.form.overtime.approvers</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='coach_id']" position="after">
+                <group string="Aprobadores de Horas Extras" name="overtime_attendance_approvers">
+                    <field name="overtime_supervisor_id" widget="many2one_avatar_user"/>
+                    <field name="overtime_manager_id" widget="many2one_avatar_user"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

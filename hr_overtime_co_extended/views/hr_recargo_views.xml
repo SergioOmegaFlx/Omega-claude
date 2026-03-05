@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_recargo_tree" model="ir.ui.view">
+        <field name="name">hr.recargo.list</field>
+        <field name="model">hr.recargo</field>
+        <field name="arch" type="xml">
+            <list string="Surcharge Records" editable="bottom">
+                <field name="employee_id"/>
+                <field name="attendance_id"/>
+                <field name="type_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="duration" sum="Total Hours"/>
+                <field name="amount" sum="Total Amount"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_recargo_form" model="ir.ui.view">
+        <field name="name">hr.recargo.form</field>
+        <field name="model">hr.recargo</field>
+        <field name="arch" type="xml">
+            <form string="Surcharge Record">
+                <sheet>
+                    <group>
+                        <field name="employee_id"/>
+                        <field name="attendance_id"/>
+                        <field name="type_id"/>
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                        <field name="duration"/>
+                        <field name="amount"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_hr_recargo" model="ir.actions.act_window">
+        <field name="name">Surcharge Records</field>
+        <field name="res_model">hr.recargo</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_hr_recargo_type" model="ir.actions.act_window">
+        <field name="name">Surcharge Types</field>
+        <field name="res_model">hr.recargo.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

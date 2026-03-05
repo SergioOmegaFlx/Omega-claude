@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_overtime_type_user,hr.overtime.type user,model_hr_overtime_type,hr.group_hr_user,1,1,1,1
+access_hr_recargo_type_user,hr.recargo.type user,model_hr_recargo_type,hr.group_hr_user,1,1,1,1
+access_hr_overtime_user,hr.overtime user,model_hr_overtime,hr.group_hr_user,1,1,1,1
+access_hr_recargo_user,hr.recargo user,model_hr_recargo,hr.group_hr_user,1,1,1,1

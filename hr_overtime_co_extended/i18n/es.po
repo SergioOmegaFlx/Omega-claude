@@ -1,0 +1,137 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_overtime_co_extended
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-22 13:30+0000\n"
+"PO-Revision-Date: 2025-08-22 13:30+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_overtime__amount
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_recargo__amount
+msgid "Amount"
+msgstr "Valor"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_overtime__attendance_id
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_recargo__attendance_id
+msgid "Attendance"
+msgstr "Asistencia"
+
+#. module: hr_overtime_co_extended
+#: model:ir.ui.menu,name:hr_overtime_co_extended.menu_hr_overtime_config
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_contract__daily_hours
+msgid "Daily Contractual Hours"
+msgstr "Horas Diarias por Contrato"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_overtime__name
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_recargo__name
+msgid "Description"
+msgstr "Descripción"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_overtime__duration
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_recargo__duration
+msgid "Duration (hours)"
+msgstr "Duración (horas)"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_overtime__employee_id
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_recargo__employee_id
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model,name:hr_overtime_co_extended.model_hr_overtime
+msgid "Employee Overtime Record"
+msgstr "Registro de Hora Extra de Empleado"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model,name:hr_overtime_co_extended.model_hr_recargo
+msgid "Employee Surcharge Record (Recargo)"
+msgstr "Registro de Recargo de Empleado"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_overtime__date_end
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_recargo__date_end
+msgid "End Date"
+msgstr "Fecha de Fin"
+
+#. module: hr_overtime_co_extended
+#: model:ir.actions.act_window,name:hr_overtime_co_extended.action_hr_overtime
+#: model:ir.ui.menu,name:hr_overtime_co_extended.menu_hr_overtime
+msgid "Overtime Records"
+msgstr "Registros de Horas Extras"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_attendance__overtime_ids
+msgid "Overtime Records"
+msgstr "Registros de Horas Extras"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model,name:hr_overtime_co_extended.model_hr_overtime_type
+msgid "Overtime Type"
+msgstr "Tipo de Hora Extra"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_overtime__type_id
+msgid "Overtime Type"
+msgstr "Tipo de Hora Extra"
+
+#. module: hr_overtime_co_extended
+#: model:ir.actions.act_window,name:hr_overtime_co_extended.action_hr_overtime_type
+#: model:ir.ui.menu,name:hr_overtime_co_extended.menu_hr_overtime_type
+msgid "Overtime Types"
+msgstr "Tipos de Horas Extras"
+
+#. module: hr_overtime_co_extended
+#: model:ir.ui.menu,name:hr_overtime_co_extended.menu_hr_overtime_root
+msgid "Overtime & Surcharges"
+msgstr "Horas Extras y Recargos"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_overtime__date_start
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_recargo__date_start
+msgid "Start Date"
+msgstr "Fecha de Inicio"
+
+#. module: hr_overtime_co_extended
+#: model:ir.actions.act_window,name:hr_overtime_co_extended.action_hr_recargo
+#: model:ir.ui.menu,name:hr_overtime_co_extended.menu_hr_recargo
+msgid "Surcharge Records"
+msgstr "Registros de Recargos"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_attendance__recargo_ids
+msgid "Surcharge Records"
+msgstr "Registros de Recargos"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model,name:hr_overtime_co_extended.model_hr_recargo_type
+msgid "Surcharge Type (Recargo)"
+msgstr "Tipo de Recargo"
+
+#. module: hr_overtime_co_extended
+#: model:ir.model.fields,field_description:hr_overtime_co_extended.field_hr_recargo__type_id
+msgid "Surcharge Type"
+msgstr "Tipo de Recargo"
+
+#. module: hr_overtime_co_extended
+#: model:ir.actions.act_window,name:hr_overtime_co_extended.action_hr_recargo_type
+#: model:ir.ui.menu,name:hr_overtime_co_extended.menu_hr_recargo_type
+msgid "Surcharge Types"
+msgstr "Tipos de Recargos"

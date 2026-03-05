@@ -1,0 +1,20 @@
+/*
+ * Petición 1: Colocar la alerta al final de los íconos.
+ * Estos estilos se aplican solo cuando la alerta está dentro de la barra de menú (.o_menu_systray).
+ */
+.o_menu_systray .o_hr_attendance_banner {
+    /* Hacemos que ocupe la altura de la barra */
+    height: 100%;
+    
+    /* Margen para separarlo de otros íconos */
+    margin-left: 8px;
+    
+    /* Quitamos el borde por defecto de la alerta para que se integre mejor */
+    border: none;
+
+    /* Forzamos que no tenga padding, ya que lo controlamos con clases de Bootstrap */
+    padding: 0px 12px !important;
+
+    /* Sombra sutil para darle un poco de profundidad */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

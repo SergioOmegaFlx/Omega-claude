@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_attendance_view_form_overtime" model="ir.ui.view">
+        <field name="name">hr.attendance.form.overtime</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <field name="is_current_user_supervisor" invisible="1"/>
+                    <button name="action_first_approve" string="Aprobación 1 (Supervisor)" type="object" class="oe_highlight"
+                            invisible="['|', ('state', '!=', 'to_approve_1'), ('is_current_user_supervisor', '=', False)]"/>
+                    
+                    <field name="is_current_user_manager" invisible="1"/>
+                    <button name="action_second_approve" string="Aprobación Final (Gerente)" type="object" class="oe_highlight"
+                            invisible="['|', ('state', '!=', 'to_approve_2'), ('is_current_user_manager', '=', False)]"/>
+                    
+                    <field name="is_current_user_accountant" invisible="1"/>
+                    <button name="action_mark_as_paid" string="Marcar como Pagado" type="object" class="oe_highlight"
+                            invisible="['|', ('state', '!=', 'approved'), ('is_current_user_accountant', '=', False)]"/>
+
+                    <button name="action_reject" string="Rechazar" type="object"
+                            invisible="['|', ('state', 'not in', ['to_approve_1', 'to_approve_2']), '&amp;', ('is_current_user_supervisor', '=', False), ('is_current_user_manager', '=', False)]"/>
+                    
+                    <button name="action_reset_to_draft" string="Forzar Recálculo" type="object"
+                            invisible="[('state', '!=', 'approved')]"/>
+                    
+                    <field name="state" widget="statusbar" statusbar_visible="to_approve_1,to_approve_2,approved,paid"/>
+                </header>
+            </xpath>
+
+            <xpath expr="//field[@name='worked_hours']" position="after">
+                <field name="current_total_hours" string="Horas Totales de la Semana" readonly="1" widget="float_time"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='worked_hours']" position="before">
+                <field name="cumulative_weekly_hours" readonly="1" widget="float_time"/>
+            </xpath>
+            
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="Horas Extras">
+                        <field name="overtime_ids" readonly="1">
+                            <list>
+                                <field name="type_id"/>
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                                <field name="duration" sum="Total Horas"/>
+                                <field name="amount" sum="Total Valor" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Recargos">
+                        <field name="recargo_ids" readonly="1">
+                             <list>
+                                <field name="type_id"/>
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                                <field name="duration" sum="Total Horas"/>
+                                <field name="amount" sum="Total Valor" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+
+            <xpath expr="//field[@name='worked_hours']" position="after">
+                <label for="total_overtime_hours" string="Total Horas Extras"/>
+                <div>
+                    <span><field name="total_overtime_hours" class="oe_inline"/> horas</span>
+                    -
+                    <span><field name="total_overtime_amount" class="oe_inline" widget="monetary" options="{'currency_field': 'company_currency'}"/></span>
+                </div>
+                <label for="total_recargo_hours" string="Total Recargos"/>
+                <div>
+                    <span><field name="total_recargo_hours" class="oe_inline"/> horas</span>
+                    -
+                    <span><field name="total_recargo_amount" class="oe_inline" widget="monetary" options="{'currency_field': 'company_currency'}"/></span>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
