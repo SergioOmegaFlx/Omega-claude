@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================
+         PROBLEMA 1 SOLUCIONADO: 
+         Las pestañas ahora se agregan DENTRO del notebook existente
+         usando xpath al notebook, no después del field description
+         ============================================ -->
+
+    <record id="view_project_form_omega" model="ir.ui.view">
+        <field name="name">project.project.form.omega</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            
+            <!-- Agregar pestañas DENTRO del notebook existente de Odoo -->
+            <xpath expr="//notebook" position="inside">
+                
+                <!-- Pestaña: Información de Operación -->
+                <page string="🚢 Operación" name="operation_info">
+                    <group>
+                        <group string="Tipo y Estado">
+                            <field name="operation_type" widget="radio"/>
+                            <field name="shipping_line"/>
+                            <field name="is_dangerous_goods"/>
+                            <field name="imo_class" invisible="not is_dangerous_goods"/>
+                        </group>
+                        <group string="Métricas">
+                            <field name="progress_percentage" widget="progressbar"/>
+                            <field name="milestone_count"/>
+                            <field name="total_milestones"/>
+                            <field name="has_alerts" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </page>
+
+                <!-- Pestaña: Booking y Naviera -->
+                <page string="📋 Booking" name="booking_info">
+                    <group>
+                        <group string="Reserva">
+                            <field name="booking_number"/>
+                            <field name="bl_number"/>
+                            <field name="bl_type"/>
+                        </group>
+                        <group string="Motonave">
+                            <field name="vessel_name"/>
+                            <field name="voyage_number"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Ruta">
+                            <field name="port_origin"/>
+                            <field name="port_destination"/>
+                        </group>
+                        <group string="Fechas Clave">
+                            <field name="etd_date"/>
+                            <field name="eta_date"/>
+                            <field name="doc_cutoff_date"/>
+                            <field name="cargo_cutoff_date"/>
+                        </group>
+                    </group>
+                </page>
+
+                <!-- Pestaña: Contenedores y Carga -->
+                <page string="📦 Contenedores" name="container_info">
+                    <group>
+                        <group string="Equipo">
+                            <field name="container_type"/>
+                            <field name="container_qty"/>
+                        </group>
+                        <group string="Carga">
+                            <field name="commodity"/>
+                        </group>
+                    </group>
+                    <group string="Números de Contenedor">
+                        <field name="container_numbers" nolabel="1" placeholder="MSCU1234567&#10;TEMU7654321&#10;..."/>
+                    </group>
+                </page>
+
+            </xpath>
+
+            <!-- Badge de alertas en el título -->
+            <xpath expr="//div[hasclass('oe_title')]" position="inside">
+                <span class="badge bg-danger ms-2" invisible="not has_alerts">
+                    🚨 Alertas Pendientes
+                </span>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ============================================
+         KANBAN VIEW - Campos invisibles para uso en templates
+         ============================================ -->
+
+    <record id="view_project_kanban_omega" model="ir.ui.view">
+        <field name="name">project.project.kanban.omega</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="inside">
+                <field name="operation_type" invisible="1"/>
+                <field name="has_alerts" invisible="1"/>
+                <field name="progress_percentage" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ============================================
+         TASK FORM VIEW - Campos de visibilidad
+         ============================================ -->
+
+    <record id="view_task_form_omega" model="ir.ui.view">
+        <field name="name">project.task.form.omega</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            
+            <!-- Campos de visibilidad después de etiquetas -->
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="task_category"/>
+                <field name="is_client_visible" widget="boolean_toggle"/>
+                <field name="is_alert" readonly="1" invisible="1"/>
+            </xpath>
+
+            <!-- Descripción para cliente (solo visible si es hito) -->
+            <xpath expr="//field[@name='description']" position="after">
+                <field name="milestone_description" 
+                       placeholder="Descripción simplificada para el cliente..."
+                       invisible="not is_client_visible"/>
+            </xpath>
+
+            <!-- Info de booking en header -->
+            <xpath expr="//div[hasclass('oe_title')]" position="after">
+                <div class="alert alert-info mt-2" role="alert" invisible="not booking_number">
+                    <i class="fa fa-ship me-2"/>
+                    <strong>Booking:</strong> <field name="booking_number" readonly="1" class="me-3"/>
+                    <strong>Motonave:</strong> <field name="vessel_name" readonly="1"/>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ============================================
+         TASK KANBAN VIEW - Campos invisibles
+         ============================================ -->
+
+    <record id="view_task_kanban_omega" model="ir.ui.view">
+        <field name="name">project.task.kanban.omega</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="inside">
+                <field name="is_client_visible" invisible="1"/>
+                <field name="is_alert" invisible="1"/>
+                <field name="task_category" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================
+         NOTA IMPORTANTE - ODOO 18:
+         Los templates 'project.portal_my_home_project' y 
+         'project.portal_my_home_task' NO existen en Odoo 18.
+         
+         Para ocultar los menús nativos, usamos CSS o 
+         desactivamos las vistas desde Configuración.
+         
+         Alternativamente, se puede usar record rules
+         para que el cliente no vea proyectos/tareas.
+         ============================================ -->
+
+    <!-- ============================================
+         PORTAL: ENTRADA EN HOME - MIS OPERACIONES
+         ============================================ -->
+
+    <template id="portal_my_home_operations" name="Portal My Home: Operations" 
+              inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'fa fa-ship'"/>
+                <t t-set="title">Mis Operaciones</t>
+                <t t-set="url" t-value="'/my/operations'"/>
+                <t t-set="text">Ver estado de sus envíos y operaciones</t>
+                <t t-set="placeholder_count" t-value="'operation_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- ============================================
+         PORTAL: LISTA DE OPERACIONES DEL CLIENTE
+         ============================================ -->
+
+    <template id="portal_my_operations" name="My Operations">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Mis Operaciones</t>
+            </t>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h4 class="mb-0">
+                                <i class="fa fa-ship me-2"/>Operaciones Activas
+                            </h4>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <span class="badge bg-light text-primary fs-6" t-if="operations">
+                                <t t-esc="len(operations)"/> operación(es)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-0">
+                    <t t-if="not operations">
+                        <div class="alert alert-info text-center m-4">
+                            <i class="fa fa-info-circle fa-2x mb-2 d-block"/>
+                            <strong>No tiene operaciones activas en este momento.</strong>
+                            <p class="mb-0 mt-2 text-muted">Cuando tenga envíos en proceso, aparecerán aquí.</p>
+                        </div>
+                    </t>
+
+                    <t t-foreach="operations" t-as="operation">
+                        <div class="border-bottom p-3 operation-item" 
+                             t-attf-style="border-left: 4px solid #{operation.has_alerts and '#dc3545' or '#28a745'} !important;">
+                            <div class="row align-items-center">
+                                <!-- Información principal -->
+                                <div class="col-lg-5 col-md-12 mb-2 mb-lg-0">
+                                    <h5 class="mb-1">
+                                        <a t-attf-href="/my/operation/#{operation.id}" 
+                                           class="text-decoration-none text-primary fw-bold">
+                                            <i class="fa fa-folder-open me-1"/>
+                                            <t t-esc="operation.name"/>
+                                        </a>
+                                        <span t-if="operation.has_alerts" 
+                                              class="badge bg-danger ms-2 align-middle">
+                                            <i class="fa fa-exclamation-triangle me-1"/>Alerta
+                                        </span>
+                                    </h5>
+                                    
+                                    <div class="text-muted small">
+                                        <t t-if="operation.commodity">
+                                            <span class="me-3">
+                                                <i class="fa fa-cube me-1"/>
+                                                <t t-esc="operation.commodity"/>
+                                            </span>
+                                        </t>
+                                        <t t-if="operation.booking_number">
+                                            <span class="me-3">
+                                                <i class="fa fa-bookmark me-1"/>
+                                                <t t-esc="operation.booking_number"/>
+                                            </span>
+                                        </t>
+                                        <t t-if="operation.vessel_name">
+                                            <span>
+                                                <i class="fa fa-ship me-1"/>
+                                                <t t-esc="operation.vessel_name"/>
+                                            </span>
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <!-- Ruta -->
+                                <div class="col-lg-3 col-md-6 mb-2 mb-lg-0">
+                                    <t t-if="operation.port_origin or operation.port_destination">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <div class="text-center">
+                                                <small class="text-success fw-bold">
+                                                    <t t-esc="operation.port_origin or '---'"/>
+                                                </small>
+                                            </div>
+                                            <div class="mx-2">
+                                                <i class="fa fa-long-arrow-right text-muted"/>
+                                            </div>
+                                            <div class="text-center">
+                                                <small class="text-danger fw-bold">
+                                                    <t t-esc="operation.port_destination or '---'"/>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <t t-if="operation.etd_date">
+                                        <div class="text-center mt-1">
+                                            <small class="text-muted">
+                                                ETD: <span t-field="operation.etd_date" t-options='{"format": "dd/MM/yy"}'/>
+                                            </small>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- Progreso -->
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="text-center">
+                                        <div class="d-flex align-items-center justify-content-center mb-1">
+                                            <div class="progress flex-grow-1 me-2" style="height: 10px; max-width: 150px;">
+                                                <div t-attf-class="progress-bar #{operation.progress_percentage == 100 and 'bg-success' or 'bg-primary'}" 
+                                                     role="progressbar"
+                                                     t-attf-style="width: #{operation.progress_percentage or 0}%"/>
+                                            </div>
+                                            <span class="fw-bold">
+                                                <t t-esc="int(operation.progress_percentage or 0)"/>%
+                                            </span>
+                                        </div>
+                                        <small class="text-muted">
+                                            <i class="fa fa-check-circle text-success me-1"/>
+                                            <t t-esc="operation.milestone_count or 0"/>/<t t-esc="operation.total_milestones or 0"/> hitos
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <!-- Paginación -->
+            <t t-if="pager">
+                <div class="d-flex justify-content-center mt-4">
+                    <t t-call="portal.pager"/>
+                </div>
+            </t>
+
+        </t>
+    </template>
+
+    <!-- ============================================
+         PORTAL: DETALLE DE UNA OPERACIÓN (DISEÑO MODERNO)
+         ============================================ -->
+
+    <template id="portal_operation_detail" name="Operation Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="o_portal_fullwidth_alert" t-value="True"/>
+
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/my/home"><i class="fa fa-home"/> Mi Cuenta</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/my/operations"><i class="fa fa-ship"/> Operaciones</a>
+                    </li>
+                    <li class="breadcrumb-item active" t-esc="operation.name"/>
+                </ol>
+            </nav>
+
+            <!-- Alerta de Novedades (si hay alertas activas) -->
+            <t t-if="has_alerts">
+                <div class="alert alert-danger shadow-sm mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-exclamation-triangle fa-2x me-3"/>
+                        <div>
+                            <strong class="fs-5">¡Atención Requerida!</strong>
+                            <p class="mb-0">
+                                Esta operación tiene <strong><t t-esc="active_alerts_count"/> novedad(es)</strong> 
+                                que requieren su atención. Por favor revise los hitos marcados en rojo.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+            <!-- Header con información principal -->
+            <div class="card shadow mb-4 border-0">
+                <div class="card-header bg-gradient" 
+                     style="background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%);">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3 class="text-white mb-1">
+                                <i class="fa fa-folder-open me-2"/>
+                                <t t-esc="operation.name"/>
+                            </h3>
+                            <p class="text-white-50 mb-0" t-if="operation_type_label">
+                                <i class="fa fa-tag me-1"/>
+                                <t t-esc="operation_type_label"/>
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            <!-- Indicador de progreso circular -->
+                            <div class="d-inline-block bg-white rounded-circle p-3 shadow">
+                                <div class="text-center" style="width: 70px;">
+                                    <span class="fs-3 fw-bold text-primary">
+                                        <t t-esc="int(progress_percentage)"/>%
+                                    </span>
+                                    <div class="small text-muted">Completado</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Barra de progreso -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="fw-bold">Progreso de la Operación</span>
+                            <span class="text-muted">
+                                <t t-esc="milestone_count"/>/<t t-esc="total_milestones"/> hitos completados
+                            </span>
+                        </div>
+                        <div class="progress" style="height: 20px;">
+                            <div t-attf-class="progress-bar progress-bar-striped #{progress_percentage == 100 and 'bg-success' or 'bg-primary'}" 
+                                 role="progressbar"
+                                 t-attf-style="width: #{progress_percentage}%"
+                                 t-attf-aria-valuenow="#{progress_percentage}"
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                                <t t-if="progress_percentage >= 15">
+                                    <t t-esc="int(progress_percentage)"/>%
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información en tarjetas -->
+                    <div class="row g-3">
+                        <!-- Ruta Visual -->
+                        <t t-if="show_route_info">
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 bg-light">
+                                    <div class="card-body text-center py-4">
+                                        <h6 class="text-muted mb-3">
+                                            <i class="fa fa-map-marker me-1"/>Ruta
+                                        </h6>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <div class="text-center">
+                                                <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                                     style="width: 50px; height: 50px;">
+                                                    <i class="fa fa-industry"/>
+                                                </div>
+                                                <div class="mt-2 fw-bold">
+                                                    <t t-esc="port_origin or 'Origen'"/>
+                                                </div>
+                                            </div>
+                                            <div class="mx-4">
+                                                <div class="border-top border-2 border-primary" style="width: 60px;"></div>
+                                                <i class="fa fa-ship text-primary mt-n2 bg-white px-1 position-relative" 
+                                                   style="font-size: 1.5rem;"/>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                                     style="width: 50px; height: 50px;">
+                                                    <i class="fa fa-flag-checkered"/>
+                                                </div>
+                                                <div class="mt-2 fw-bold">
+                                                    <t t-esc="port_destination or 'Destino'"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Fechas Clave -->
+                        <t t-if="show_dates_info">
+                            <div t-attf-class="col-md-#{show_route_info and '6' or '12'}">
+                                <div class="card h-100 border-0 bg-light">
+                                    <div class="card-body">
+                                        <h6 class="text-muted mb-3">
+                                            <i class="fa fa-calendar me-1"/>Fechas Clave
+                                        </h6>
+                                        <div class="row g-2">
+                                            <t t-if="etd_date">
+                                                <div class="col-6">
+                                                    <div class="bg-white rounded p-2 text-center">
+                                                        <small class="text-muted d-block">ETD (Zarpe)</small>
+                                                        <strong class="text-primary" t-field="operation.etd_date" 
+                                                                t-options='{"format": "dd MMM yyyy"}'/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <t t-if="eta_date">
+                                                <div class="col-6">
+                                                    <div class="bg-white rounded p-2 text-center">
+                                                        <small class="text-muted d-block">ETA (Arribo)</small>
+                                                        <strong class="text-success" t-field="operation.eta_date"
+                                                                t-options='{"format": "dd MMM yyyy"}'/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información Adicional (colapsable) -->
+            <t t-if="show_booking_info or show_container_info or show_bl_info">
+                <div class="card shadow-sm mb-4 border-0">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link text-decoration-none p-0 text-dark" 
+                                    type="button" 
+                                    data-bs-toggle="collapse" 
+                                    data-bs-target="#additionalInfo">
+                                <i class="fa fa-info-circle me-2"/>Información del Embarque
+                                <i class="fa fa-chevron-down ms-2 small"/>
+                            </button>
+                        </h5>
+                    </div>
+                    <div class="collapse show" id="additionalInfo">
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Booking Info -->
+                                <t t-if="show_booking_info">
+                                    <div class="col-md-4">
+                                        <div class="border rounded p-3 h-100">
+                                            <h6 class="border-bottom pb-2 mb-3">
+                                                <i class="fa fa-bookmark text-primary me-2"/>Booking
+                                            </h6>
+                                            <t t-if="booking_number">
+                                                <p class="mb-1">
+                                                    <small class="text-muted">Número:</small><br/>
+                                                    <strong><t t-esc="booking_number"/></strong>
+                                                </p>
+                                            </t>
+                                            <t t-if="vessel_name">
+                                                <p class="mb-1">
+                                                    <small class="text-muted">Motonave:</small><br/>
+                                                    <strong><t t-esc="vessel_name"/></strong>
+                                                    <t t-if="voyage_number">
+                                                        <span class="text-muted"> / <t t-esc="voyage_number"/></span>
+                                                    </t>
+                                                </p>
+                                            </t>
+                                            <t t-if="shipping_line_label">
+                                                <p class="mb-0">
+                                                    <small class="text-muted">Naviera:</small><br/>
+                                                    <strong><t t-esc="shipping_line_label"/></strong>
+                                                </p>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <!-- Container Info -->
+                                <t t-if="show_container_info">
+                                    <div class="col-md-4">
+                                        <div class="border rounded p-3 h-100">
+                                            <h6 class="border-bottom pb-2 mb-3">
+                                                <i class="fa fa-cube text-warning me-2"/>Contenedores
+                                            </h6>
+                                            <t t-if="container_type_label">
+                                                <p class="mb-1">
+                                                    <small class="text-muted">Tipo:</small><br/>
+                                                    <strong><t t-esc="container_type_label"/></strong>
+                                                </p>
+                                            </t>
+                                            <t t-if="container_qty">
+                                                <p class="mb-1">
+                                                    <small class="text-muted">Cantidad:</small><br/>
+                                                    <strong><t t-esc="container_qty"/></strong>
+                                                </p>
+                                            </t>
+                                            <t t-if="container_numbers">
+                                                <p class="mb-0">
+                                                    <small class="text-muted">Números:</small><br/>
+                                                    <code class="bg-light p-1 rounded d-block" style="font-size: 0.85em;">
+                                                        <t t-esc="container_numbers"/>
+                                                    </code>
+                                                </p>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <!-- BL Info -->
+                                <t t-if="show_bl_info">
+                                    <div class="col-md-4">
+                                        <div class="border rounded p-3 h-100">
+                                            <h6 class="border-bottom pb-2 mb-3">
+                                                <i class="fa fa-file-text text-info me-2"/>Documentos
+                                            </h6>
+                                            <t t-if="bl_number">
+                                                <p class="mb-1">
+                                                    <small class="text-muted">Número de BL:</small><br/>
+                                                    <strong><t t-esc="bl_number"/></strong>
+                                                </p>
+                                            </t>
+                                            <t t-if="bl_type_label">
+                                                <p class="mb-0">
+                                                    <small class="text-muted">Tipo de Emisión:</small><br/>
+                                                    <strong><t t-esc="bl_type_label"/></strong>
+                                                </p>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <!-- Carga Info -->
+                                <t t-if="commodity">
+                                    <div class="col-md-4">
+                                        <div class="border rounded p-3 h-100">
+                                            <h6 class="border-bottom pb-2 mb-3">
+                                                <i class="fa fa-archive text-secondary me-2"/>Carga
+                                            </h6>
+                                            <p class="mb-1">
+                                                <small class="text-muted">Commodity:</small><br/>
+                                                <strong><t t-esc="commodity"/></strong>
+                                            </p>
+                                            <t t-if="is_dangerous_goods">
+                                                <p class="mb-0">
+                                                    <span class="badge bg-danger">
+                                                        <i class="fa fa-warning me-1"/>IMO - Mercancía Peligrosa
+                                                    </span>
+                                                    <t t-if="imo_class">
+                                                        <br/><small class="text-muted">Clase: <t t-esc="imo_class"/></small>
+                                                    </t>
+                                                </p>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+            <!-- Timeline de Hitos (Diseño Moderno) -->
+            <div class="card shadow mb-4 border-0">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fa fa-tasks me-2 text-primary"/>Estado de Hitos
+                    </h5>
+                    <span class="badge bg-primary">
+                        <t t-esc="completed_count"/>/<t t-esc="len(milestones_data)"/> completados
+                    </span>
+                </div>
+                <div class="card-body p-0">
+                    <t t-if="not milestones_data">
+                        <div class="text-center py-5">
+                            <i class="fa fa-clipboard fa-3x text-muted mb-3 d-block"/>
+                            <p class="text-muted">No hay hitos registrados aún para esta operación.</p>
+                        </div>
+                    </t>
+
+                    <!-- Timeline moderno -->
+                    <div class="timeline-container p-4" t-if="milestones_data">
+                        <t t-foreach="milestones_data" t-as="m">
+                            <div t-attf-class="timeline-item d-flex mb-3 #{m['is_alert'] and not m['is_completed'] and 'timeline-alert' or ''}">
+                                <!-- Icono del estado -->
+                                <div class="timeline-icon me-3">
+                                    <t t-if="m['is_completed']">
+                                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                             style="width: 40px; height: 40px;">
+                                            <i class="fa fa-check"/>
+                                        </div>
+                                    </t>
+                                    <t t-elif="m['is_alert']">
+                                        <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                             style="width: 40px; height: 40px;">
+                                            <i class="fa fa-exclamation"/>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="bg-light text-muted border rounded-circle d-flex align-items-center justify-content-center" 
+                                             style="width: 40px; height: 40px;">
+                                            <i class="fa fa-clock-o"/>
+                                        </div>
+                                    </t>
+                                </div>
+                                
+                                <!-- Contenido del hito -->
+                                <div t-attf-class="timeline-content flex-grow-1 card #{m['is_alert'] and not m['is_completed'] and 'border-danger border-2' or (m['is_completed'] and 'border-success' or 'border-light')}">
+                                    <div class="card-body py-2 px-3">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 t-attf-class="mb-1 #{m['is_completed'] and 'text-success' or (m['is_alert'] and 'text-danger' or '')}">
+                                                    <t t-esc="m['name']"/>
+                                                </h6>
+                                                <t t-if="m['description']">
+                                                    <p class="text-muted small mb-1">
+                                                        <t t-esc="m['description']"/>
+                                                    </p>
+                                                </t>
+                                                <t t-if="m['completion_date']">
+                                                    <small class="text-success">
+                                                        <i class="fa fa-check-circle me-1"/>
+                                                        Completado: <t t-esc="m['completion_date']"/>
+                                                    </small>
+                                                </t>
+                                            </div>
+                                            <div class="text-end">
+                                                <t t-if="m['is_alert'] and not m['is_completed']">
+                                                    <span class="badge bg-danger">
+                                                        <i class="fa fa-warning me-1"/>ALERTA
+                                                    </span>
+                                                </t>
+                                                <t t-elif="m['is_completed']">
+                                                    <span class="badge bg-success">
+                                                        <i class="fa fa-check me-1"/>Completado
+                                                    </span>
+                                                </t>
+                                                <t t-else="">
+                                                    <span class="badge bg-secondary">
+                                                        <t t-esc="m['stage_name']"/>
+                                                    </span>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de regreso -->
+            <div class="text-center mt-4 mb-4">
+                <a href="/my/operations" class="btn btn-outline-primary">
+                    <i class="fa fa-arrow-left me-2"/>Volver a Mis Operaciones
+                </a>
+            </div>
+
+            <!-- Estilos adicionales -->
+            <style>
+                .timeline-container {
+                    position: relative;
+                }
+                .timeline-item {
+                    position: relative;
+                }
+                .timeline-item:not(:last-child)::before {
+                    content: '';
+                    position: absolute;
+                    left: 19px;
+                    top: 45px;
+                    bottom: -15px;
+                    width: 2px;
+                    background: #dee2e6;
+                }
+                .timeline-item:not(:last-child).timeline-alert::before {
+                    background: #dc3545;
+                }
+                .timeline-icon {
+                    position: relative;
+                    z-index: 1;
+                }
+                .operation-item:hover {
+                    background-color: #f8f9fa;
+                }
+            </style>
+
+        </t>
+    </template>
+
+    <!-- ============================================
+         PORTAL: DETALLE DE TAREA/HITO
+         ============================================ -->
+
+    <template id="portal_task_detail" name="Task Detail">
+        <t t-call="portal.portal_layout">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/my/home"><i class="fa fa-home"/> Mi Cuenta</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/my/operations"><i class="fa fa-ship"/> Operaciones</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a t-attf-href="/my/operation/#{operation.id}">
+                            <t t-esc="operation.name"/>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" t-esc="task.name"/>
+                </ol>
+            </nav>
+
+            <div class="card shadow">
+                <div t-attf-class="card-header #{milestone_data['is_alert'] and 'bg-danger' or (milestone_data['is_completed'] and 'bg-success' or 'bg-primary')} text-white">
+                    <h4 class="mb-0">
+                        <t t-if="milestone_data['is_completed']">
+                            <i class="fa fa-check-circle me-2"/>
+                        </t>
+                        <t t-elif="milestone_data['is_alert']">
+                            <i class="fa fa-exclamation-triangle me-2"/>
+                        </t>
+                        <t t-else="">
+                            <i class="fa fa-clock-o me-2"/>
+                        </t>
+                        <t t-esc="task.name"/>
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h6>Descripción</h6>
+                            <p t-if="milestone_data['description']" t-esc="milestone_data['description']"/>
+                            <p t-else="" class="text-muted">Sin descripción adicional.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Estado</h6>
+                            <p>
+                                <span t-attf-class="badge #{milestone_data['is_completed'] and 'bg-success' or 'bg-secondary'} fs-6">
+                                    <t t-esc="milestone_data['stage_name']"/>
+                                </span>
+                            </p>
+                            <t t-if="milestone_data['completion_date']">
+                                <h6>Fecha de Completado</h6>
+                                <p><t t-esc="milestone_data['completion_date']"/></p>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a t-attf-href="/my/operation/#{operation.id}" class="btn btn-outline-primary">
+                        <i class="fa fa-arrow-left me-2"/>Volver a la Operación
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

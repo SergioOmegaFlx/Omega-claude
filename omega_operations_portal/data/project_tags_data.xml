@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- ============================================
+             ETIQUETAS DE VISIBILIDAD Y CLASIFICACIÓN
+             ============================================ -->
+
+        <!-- Etiqueta: Hito visible para cliente -->
+        <record id="project_tag_milestone" model="project.tags">
+            <field name="name">🎯 HITO CLIENTE</field>
+            <field name="color">10</field> <!-- Verde -->
+        </record>
+
+        <!-- Etiqueta: Tarea interna -->
+        <record id="project_tag_internal" model="project.tags">
+            <field name="name">🔒 INTERNO</field>
+            <field name="color">8</field> <!-- Gris -->
+        </record>
+
+        <!-- Etiqueta: Alerta/Novedad -->
+        <record id="project_tag_alert" model="project.tags">
+            <field name="name">🚨 ALERTA</field>
+            <field name="color">1</field> <!-- Rojo -->
+        </record>
+
+        <!-- ============================================
+             ETIQUETAS POR FASE DE OPERACIÓN
+             ============================================ -->
+
+        <record id="project_tag_booking" model="project.tags">
+            <field name="name">📋 Booking</field>
+            <field name="color">4</field> <!-- Azul -->
+        </record>
+
+        <record id="project_tag_docs" model="project.tags">
+            <field name="name">📄 Documental</field>
+            <field name="color">5</field> <!-- Morado -->
+        </record>
+
+        <record id="project_tag_physical" model="project.tags">
+            <field name="name">🏗️ Operación Física</field>
+            <field name="color">6</field> <!-- Naranja -->
+        </record>
+
+        <record id="project_tag_customs" model="project.tags">
+            <field name="name">🛃 Aduanas</field>
+            <field name="color">3</field> <!-- Amarillo -->
+        </record>
+
+        <record id="project_tag_transport" model="project.tags">
+            <field name="name">🚛 Transporte</field>
+            <field name="color">9</field> <!-- Teal -->
+        </record>
+
+        <record id="project_tag_urgent" model="project.tags">
+            <field name="name">⚡ Urgente</field>
+            <field name="color">1</field> <!-- Rojo -->
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,215 @@
+/* ============================================
+   OMEGA Operations Portal - Custom Styles
+   ============================================ */
+
+/* === Operaciones List === */
+.operation-item {
+    transition: all 0.2s ease;
+}
+
+.operation-item:hover {
+    background-color: #f8f9fa !important;
+    transform: translateX(5px);
+}
+
+/* === Timeline Styles === */
+.timeline-container {
+    position: relative;
+}
+
+.timeline-item {
+    position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+.timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 45px;
+    bottom: -15px;
+    width: 2px;
+    background: linear-gradient(180deg, #dee2e6 0%, #e9ecef 100%);
+}
+
+.timeline-item:not(:last-child).timeline-alert::before {
+    background: linear-gradient(180deg, #dc3545 0%, #e74c3c 100%);
+}
+
+.timeline-icon {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+.timeline-icon > div {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.timeline-item:hover .timeline-icon > div {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.timeline-content {
+    transition: box-shadow 0.2s ease;
+}
+
+.timeline-item:hover .timeline-content {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+
+/* === Progress Bar Animations === */
+.progress-bar {
+    transition: width 1s ease-in-out;
+}
+
+/* === Card Enhancements === */
+.card {
+    transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+}
+
+/* === Alert Pulse Animation === */
+.badge.bg-danger {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+/* === Fade In Animation === */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Route Visual === */
+.route-line {
+    position: relative;
+}
+
+.route-line::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #28a745, #007bff, #dc3545);
+    z-index: -1;
+}
+
+/* === Status Colors === */
+.status-completed { color: #28a745 !important; }
+.status-pending { color: #6c757d !important; }
+.status-alert { color: #dc3545 !important; }
+.status-in-progress { color: #007bff !important; }
+
+/* === Circular Progress Indicator === */
+.progress-circle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-circle::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid #e9ecef;
+}
+
+.progress-circle::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-top-color: #007bff;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+    .timeline-item:not(:last-child)::before {
+        left: 15px;
+    }
+    
+    .timeline-icon > div {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.8rem;
+    }
+    
+    .operation-item:hover {
+        transform: none;
+    }
+}
+
+/* === Print Styles === */
+@media print {
+    .timeline-item:not(:last-child)::before {
+        background: #000 !important;
+    }
+    
+    .badge {
+        border: 1px solid #000;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6;
+    }
+}
+
+/* === Dark Mode Support (if Odoo supports it) === */
+@media (prefers-color-scheme: dark) {
+    .timeline-item:not(:last-child)::before {
+        background: #495057;
+    }
+}
+
+/* === Accessibility === */
+.timeline-item:focus-within {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Ensure sufficient color contrast */
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* === Loading States === */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

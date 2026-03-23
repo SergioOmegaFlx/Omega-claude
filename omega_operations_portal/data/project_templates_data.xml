@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================
+             PROBLEMA 2 y 3 SOLUCIONADOS:
+             - Cada tarea tiene tag_ids asignados
+             - Cada tarea tiene stage_id apuntando a etapa "Nuevo"
+             - Cada tarea tiene user_ids con usuario por defecto
+             
+             ⚠️ IMPORTANTE PARA CAMBIAR USUARIOS:
+             Busca todas las líneas que contengan:
+                 <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+             
+             Y cámbialas por el ID de tu usuario o equipo. Ejemplos:
+                 - Un usuario específico: ref('base.user_admin') → ref('tu_modulo.tu_usuario_id')
+                 - Usuario actual: Eliminar la línea (se asignará al crear)
+                 - Múltiples usuarios: [(6, 0, [ref('user1'), ref('user2')])]
+             ============================================ -->
+
+
+        <!-- ============================================
+             PLANTILLA: EXPORTACIÓN FLEXITANQUE
+             ============================================ -->
+
+        <record id="project_template_export_flex" model="project.project">
+            <field name="name">[PLANTILLA] Exportación Flexitanque</field>
+            <field name="active">False</field>
+            <field name="operation_type">export_flex</field>
+            <field name="description">Plantilla para operaciones de exportación con Flexitanque</field>
+        </record>
+
+        <!-- ========== HITOS (Visibles al cliente) ========== -->
+
+        <record id="task_flex_booking_confirmed" model="project.task">
+            <field name="name">📋 Reserva Confirmada</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">10</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">booking</field>
+            <field name="milestone_description">La reserva con la naviera ha sido confirmada.</field>
+            <!-- ETIQUETAS: Hito + Booking -->
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_booking')
+            ])]"/>
+            <!-- ETAPA: Nuevo -->
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <!-- ⚠️ USUARIO: Cambia 'base.user_admin' por tu usuario -->
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_equipment_positioned" model="project.task">
+            <field name="name">📦 Equipo Posicionado en Planta</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">20</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">physical_op</field>
+            <field name="milestone_description">El contenedor ha sido posicionado en planta.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_physical')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_operation_complete" model="project.task">
+            <field name="name">✅ Operación Física Finalizada</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">30</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">physical_op</field>
+            <field name="milestone_description">El llenado del flexitanque completado.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_physical')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_doc_approval" model="project.task">
+            <field name="name">📄 Aprobación Documental (Draft BL/VGM)</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">40</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">documentation</field>
+            <field name="milestone_description">Documentos listos para revisión.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_docs')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_departure" model="project.task">
+            <field name="name">🚢 Zarpe Confirmado</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">50</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">documentation</field>
+            <field name="milestone_description">La motonave ha zarpado.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_docs_released" model="project.task">
+            <field name="name">📜 Documentos Finales Liberados</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">60</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">documentation</field>
+            <field name="milestone_description">BL original emitido y liberado.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_docs')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <!-- ========== TAREAS INTERNAS (No visibles al cliente) ========== -->
+
+        <record id="task_flex_int_request_booking" model="project.task">
+            <field name="name">Solicitar reserva a naviera</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">11</field>
+            <field name="is_client_visible">False</field>
+            <field name="task_category">booking</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_internal'),
+                ref('omega_operations_portal.project_tag_booking')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_int_service_order" model="project.task">
+            <field name="name">Solicitar orden de servicio al cliente</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">12</field>
+            <field name="is_client_visible">False</field>
+            <field name="task_category">other</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_internal')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_int_hire_transport" model="project.task">
+            <field name="name">Contratar transporte terrestre</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">21</field>
+            <field name="is_client_visible">False</field>
+            <field name="task_category">transport</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_internal'),
+                ref('omega_operations_portal.project_tag_transport')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_int_activate_empty" model="project.task">
+            <field name="name">Activar ingreso vacío</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">22</field>
+            <field name="is_client_visible">False</field>
+            <field name="task_category">physical_op</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_internal'),
+                ref('omega_operations_portal.project_tag_physical')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_int_request_si" model="project.task">
+            <field name="name">Solicitar y enviar S.I. a naviera</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">41</field>
+            <field name="is_client_visible">False</field>
+            <field name="task_category">documentation</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_internal'),
+                ref('omega_operations_portal.project_tag_docs')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_int_customs_docs" model="project.task">
+            <field name="name">Enviar documentos aduaneros</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">42</field>
+            <field name="is_client_visible">False</field>
+            <field name="task_category">customs</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_internal'),
+                ref('omega_operations_portal.project_tag_customs')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_int_send_vgm" model="project.task">
+            <field name="name">Enviar VGM a naviera</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">43</field>
+            <field name="is_client_visible">False</field>
+            <field name="task_category">documentation</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_internal')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_flex_int_close_do" model="project.task">
+            <field name="name">Cierre de DO</field>
+            <field name="project_id" ref="project_template_export_flex"/>
+            <field name="sequence">99</field>
+            <field name="is_client_visible">False</field>
+            <field name="task_category">other</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_internal')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+
+        <!-- ============================================
+             PLANTILLA: EXPORTACIÓN ISOTANQUE
+             ============================================ -->
+
+        <record id="project_template_export_iso" model="project.project">
+            <field name="name">[PLANTILLA] Exportación Isotanque</field>
+            <field name="active">False</field>
+            <field name="operation_type">export_iso</field>
+            <field name="description">Plantilla para operaciones con Isotanque</field>
+        </record>
+
+        <record id="task_iso_booking_confirmed" model="project.task">
+            <field name="name">📋 Reserva Confirmada</field>
+            <field name="project_id" ref="project_template_export_iso"/>
+            <field name="sequence">10</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">booking</field>
+            <field name="milestone_description">Reserva confirmada, certificados enviados.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_booking')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_iso_tank_available" model="project.task">
+            <field name="name">🔧 Isotanque Disponible en Depot</field>
+            <field name="project_id" ref="project_template_export_iso"/>
+            <field name="sequence">15</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">physical_op</field>
+            <field name="milestone_description">Isotanque asignado y disponible.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_iso_positioned" model="project.task">
+            <field name="name">📦 Isotanque Posicionado</field>
+            <field name="project_id" ref="project_template_export_iso"/>
+            <field name="sequence">20</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">physical_op</field>
+            <field name="milestone_description">Isotanque posicionado en planta.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_physical')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_iso_loaded" model="project.task">
+            <field name="name">✅ Cargue Finalizado</field>
+            <field name="project_id" ref="project_template_export_iso"/>
+            <field name="sequence">30</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">physical_op</field>
+            <field name="milestone_description">Cargue del isotanque completado.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_physical')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_iso_docs" model="project.task">
+            <field name="name">📄 Aprobación Documental</field>
+            <field name="project_id" ref="project_template_export_iso"/>
+            <field name="sequence">40</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">documentation</field>
+            <field name="milestone_description">Documentos listos para revisión.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_docs')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_iso_departure" model="project.task">
+            <field name="name">🚢 Zarpe Confirmado</field>
+            <field name="project_id" ref="project_template_export_iso"/>
+            <field name="sequence">50</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">documentation</field>
+            <field name="milestone_description">La motonave ha zarpado.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_iso_released" model="project.task">
+            <field name="name">📜 Documentos Liberados</field>
+            <field name="project_id" ref="project_template_export_iso"/>
+            <field name="sequence">60</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">documentation</field>
+            <field name="milestone_description">BL emitido y liberado.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_docs')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+
+        <!-- ============================================
+             PLANTILLA: IMPORTACIÓN
+             ============================================ -->
+
+        <record id="project_template_import" model="project.project">
+            <field name="name">[PLANTILLA] Importación</field>
+            <field name="active">False</field>
+            <field name="operation_type">import</field>
+            <field name="description">Plantilla para operaciones de importación</field>
+        </record>
+
+        <record id="task_import_prealert" model="project.task">
+            <field name="name">📨 Pre-Alert Recibido</field>
+            <field name="project_id" ref="project_template_import"/>
+            <field name="sequence">10</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">documentation</field>
+            <field name="milestone_description">Pre-alert recibido y procesado.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_docs')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_import_documented" model="project.task">
+            <field name="name">📋 Carga Documentada MUISCA</field>
+            <field name="project_id" ref="project_template_import"/>
+            <field name="sequence">20</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">customs</field>
+            <field name="milestone_description">Carga documentada en sistema MUISCA.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_customs')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_import_arrived" model="project.task">
+            <field name="name">🚢 Motonave Arribó</field>
+            <field name="project_id" ref="project_template_import"/>
+            <field name="sequence">30</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">other</field>
+            <field name="milestone_description">La motonave ha arribado a puerto.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_import_released" model="project.task">
+            <field name="name">📄 BL Liberado</field>
+            <field name="project_id" ref="project_template_import"/>
+            <field name="sequence">40</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">documentation</field>
+            <field name="milestone_description">BL liberado para retiro.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_docs')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_import_received" model="project.task">
+            <field name="name">✅ Carga Recepcionada DIAN</field>
+            <field name="project_id" ref="project_template_import"/>
+            <field name="sequence">50</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">customs</field>
+            <field name="milestone_description">Carga recepcionada y finalizada en DIAN.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_customs')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+
+        <!-- ============================================
+             PLANTILLA: OPERACIÓN FÍSICA
+             ============================================ -->
+
+        <record id="project_template_physical_op" model="project.project">
+            <field name="name">[PLANTILLA] Operación Física</field>
+            <field name="active">False</field>
+            <field name="operation_type">physical_op</field>
+            <field name="description">Plantilla para operaciones físicas</field>
+        </record>
+
+        <record id="task_phys_validated" model="project.task">
+            <field name="name">✓ Operación Validada</field>
+            <field name="project_id" ref="project_template_physical_op"/>
+            <field name="sequence">10</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">physical_op</field>
+            <field name="milestone_description">Operación validada y confirmada.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_physical')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_phys_transport" model="project.task">
+            <field name="name">🚛 Transporte Asignado</field>
+            <field name="project_id" ref="project_template_physical_op"/>
+            <field name="sequence">20</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">transport</field>
+            <field name="milestone_description">Transporte terrestre asignado.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_transport')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_phys_progress" model="project.task">
+            <field name="name">⚙️ Operación en Curso</field>
+            <field name="project_id" ref="project_template_physical_op"/>
+            <field name="sequence">30</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">physical_op</field>
+            <field name="milestone_description">Operación física en progreso.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_physical')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+
+        <record id="task_phys_complete" model="project.task">
+            <field name="name">✅ Operación Finalizada</field>
+            <field name="project_id" ref="project_template_physical_op"/>
+            <field name="sequence">40</field>
+            <field name="is_client_visible">True</field>
+            <field name="task_category">physical_op</field>
+            <field name="milestone_description">Operación física completada exitosamente.</field>
+            <field name="tag_ids" eval="[(6, 0, [
+                ref('omega_operations_portal.project_tag_milestone'),
+                ref('omega_operations_portal.project_tag_physical')
+            ])]"/>
+            <field name="stage_id" ref="omega_operations_portal.project_stage_new"/>
+            <field name="user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+        </record>
+        <record id="project_stage_new" model="project.task.type">
+            <field name="project_ids" eval="[(4, ref('project_template_export_flex')), (4, ref('project_template_export_iso')), (4, ref('project_template_import')), (4, ref('project_template_physical_op'))]"/>
+        </record>
+        <record id="project_stage_in_progress" model="project.task.type">
+            <field name="project_ids" eval="[(4, ref('project_template_export_flex')), (4, ref('project_template_export_iso')), (4, ref('project_template_import')), (4, ref('project_template_physical_op'))]"/>
+        </record>
+        <record id="project_stage_waiting" model="project.task.type">
+            <field name="project_ids" eval="[(4, ref('project_template_export_flex')), (4, ref('project_template_export_iso')), (4, ref('project_template_import')), (4, ref('project_template_physical_op'))]"/>
+        </record>
+        <record id="project_stage_review" model="project.task.type">
+            <field name="project_ids" eval="[(4, ref('project_template_export_flex')), (4, ref('project_template_export_iso')), (4, ref('project_template_import')), (4, ref('project_template_physical_op'))]"/>
+        </record>
+        <record id="project_stage_alert" model="project.task.type">
+            <field name="project_ids" eval="[(4, ref('project_template_export_flex')), (4, ref('project_template_export_iso')), (4, ref('project_template_import')), (4, ref('project_template_physical_op'))]"/>
+        </record>
+        <record id="project_stage_done" model="project.task.type">
+            <field name="project_ids" eval="[(4, ref('project_template_export_flex')), (4, ref('project_template_export_iso')), (4, ref('project_template_import')), (4, ref('project_template_physical_op'))]"/>
+        </record>
+        <record id="project_stage_cancelled" model="project.task.type">
+            <field name="project_ids" eval="[(4, ref('project_template_export_flex')), (4, ref('project_template_export_iso')), (4, ref('project_template_import')), (4, ref('project_template_physical_op'))]"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================
+         SALE ORDER FORM VIEW - BOTÓN DE PROYECTO
+         ============================================ -->
+
+    <record id="view_order_form_omega" model="ir.ui.view">
+        <field name="name">sale.order.form.omega</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Agregar botón para ver proyecto de operación -->
+            <xpath expr="//button[@name='action_view_invoice']" position="after">
+                <button name="action_view_operation_project" 
+                        type="object"
+                        class="oe_stat_button" 
+                        icon="fa-ship"
+                        invisible="not operation_project_id">
+                    <field name="operation_project_id" invisible="1"/>
+                    <span class="o_stat_text">DO</span>
+                </button>
+            </xpath>
+
+            <!-- Agregar campo para activar/desactivar creación automática -->
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="auto_create_project" 
+                       widget="boolean_toggle"
+                       groups="sales_team.group_sale_manager"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ============================================
+         SALE ORDER TREE VIEW - COLUMNA DO
+         ============================================ -->
+
+    <record id="view_order_tree_omega" model="ir.ui.view">
+        <field name="name">sale.order.tree.omega</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_status']" position="after">
+                <field name="operation_project_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

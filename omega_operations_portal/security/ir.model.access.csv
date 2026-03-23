@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_project_portal,project.project.portal,project.model_project_project,base.group_portal,1,0,0,0
+access_project_task_portal,project.task.portal,project.model_project_task,base.group_portal,1,0,0,0
+access_project_task_type_portal,project.task.type.portal,project.model_project_task_type,base.group_portal,1,0,0,0
+access_project_tags_portal,project.tags.portal,project.model_project_tags,base.group_portal,1,0,0,0

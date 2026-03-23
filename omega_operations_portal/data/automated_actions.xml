@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="email_template_milestone_completed" model="mail.template">
+            <field name="name">OMEGA: Hito Completado</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="email_from">{{ (object.project_id.company_id.email or user.email_formatted) }}</field>
+            <field name="email_to">{{ object.project_id.partner_id.email }}</field>
+            <field name="subject">✅ {{ object.project_id.name }} - {{ object.name }} completado</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <div style="background-color: #1a5f2a; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">✅ Hito Completado</h1>
+    </div>
+    
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p>Estimado/a <strong>{{ object.project_id.partner_id.name }}</strong>,</p>
+        
+        <p>Le informamos que el siguiente hito de su operación ha sido completado exitosamente:</p>
+        
+        <div style="background-color: white; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0;">
+            <h3 style="margin: 0 0 10px 0; color: #1a5f2a;">{{ object.name }}</h3>
+            <p style="margin: 0; color: #666;">
+                Operación: <strong>{{ object.project_id.name }}</strong><br/>
+                {% if object.project_id.booking_number %}
+                Booking: <strong>{{ object.project_id.booking_number }}</strong><br/>
+                {% endif %}
+                {% if object.project_id.vessel_name %}
+                Motonave: <strong>{{ object.project_id.vessel_name }}</strong>
+                {% endif %}
+            </p>
+        </div>
+        
+        <p>Puede ver el detalle completo y los documentos asociados en su portal:</p>
+        
+        <p style="text-align: center;">
+            <a href="{{ object.project_id.access_url }}" 
+               style="background-color: #e74c3c; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                Ver en Portal
+            </a>
+        </p>
+        
+        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+        
+        <p style="color: #666; font-size: 12px;">
+            Equipo de Operaciones<br/>
+            <strong>OMEGA Internacional</strong><br/>
+            ISO Tanks &amp; Flexitanks
+        </p>
+    </div>
+</div>
+            ]]></field>
+        </record>
+
+        <record id="email_template_alert_created" model="mail.template">
+            <field name="name">OMEGA: Nueva Alerta</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="email_from">{{ (object.project_id.company_id.email or user.email_formatted) }}</field>
+            <field name="email_to">{{ object.project_id.partner_id.email }}</field>
+            <field name="subject">🚨 {{ object.project_id.name }} - Novedad requiere su atención</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <div style="background-color: #c0392b; color: white; padding: 20px; text-align: center;">
+        <h1 style="margin: 0;">🚨 Novedad en su Operación</h1>
+    </div>
+    
+    <div style="padding: 20px; background-color: #f9f9f9;">
+        <p>Estimado/a <strong>{{ object.project_id.partner_id.name }}</strong>,</p>
+        
+        <p>Se ha registrado una novedad en su operación que requiere su atención:</p>
+        
+        <div style="background-color: white; border-left: 4px solid #e74c3c; padding: 15px; margin: 20px 0;">
+            <h3 style="margin: 0 0 10px 0; color: #c0392b;">{{ object.name }}</h3>
+            <p style="margin: 0; color: #666;">
+                Operación: <strong>{{ object.project_id.name }}</strong><br/>
+                {% if object.project_id.booking_number %}
+                Booking: <strong>{{ object.project_id.booking_number }}</strong>
+                {% endif %}
+            </p>
+            {% if object.description %}
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
+                {{ object.description }}
+            </div>
+            {% endif %}
+        </div>
+        
+        <p><strong>Por favor revise los detalles y responda a través del portal:</strong></p>
+        
+        <p style="text-align: center;">
+            <a href="{{ object.access_url }}" 
+               style="background-color: #e74c3c; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                Ver Novedad
+            </a>
+        </p>
+        
+        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+        
+        <p style="color: #666; font-size: 12px;">
+            Equipo de Operaciones<br/>
+            <strong>OMEGA Internacional</strong><br/>
+            ISO Tanks &amp; Flexitanks
+        </p>
+    </div>
+</div>
+            ]]></field>
+        </record>
+
+    </data>
+</odoo>
